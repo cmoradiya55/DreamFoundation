@@ -6,8 +6,8 @@ import { Calendar, GraduationCap } from 'lucide-react';
 
 const FormNavigation: React.FC = () => {
   return (
-    <div className="fixed top-4 right-4 z-50">
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4">
+    <div className="fixed top-4 right-4 z-50 pt-16">
+      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 ">
         <h3 className="text-sm font-semibold text-gray-700 mb-3">Quick Navigation</h3>
         <div className="space-y-2">
           <Link

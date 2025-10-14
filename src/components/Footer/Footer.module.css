@@ -1,0 +1,150 @@
+.footer {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    margin-top: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 0;
+}
+
+.footerContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 30px;
+}
+
+.logoSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.logoLink {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+
+.logoImage {
+    height: 50px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.logoText {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+}
+
+.description {
+    color: #cccccc;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.linksList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.linksList li {
+    margin-bottom: 8px;
+}
+
+.footerLink {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footerLink:hover {
+    color: #2c5aa0;
+}
+
+.socialLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.socialLink {
+    display: flex;
+    align-items: center;
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.socialLink:hover {
+    color: #2c5aa0;
+}
+
+.socialIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.bottomBar {
+    border-top: 1px solid #333;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.copyright {
+    color: #999;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .footerContent {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+    
+    .logoLink {
+        justify-content: center;
+    }
+    
+    .socialLinks {
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 30px 15px 0;
+    }
+    
+    .footerContent {
+        gap: 25px;
+    }
+    
+    .logoImage {
+        height: 40px;
+    }
+    
+    .logoText {
+        font-size: 20px;
+    }
+}
