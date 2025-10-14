@@ -1,6 +1,6 @@
 const HomePage = () => (
   <>
-    
+    <div>Hi</div>
   </>
 );
 
