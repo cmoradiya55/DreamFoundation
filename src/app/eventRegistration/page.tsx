@@ -82,8 +82,29 @@ const EventRegistration: React.FC = () => {
       console.log('Registration ID:', registrationId);
       console.log('Formatted Form Data:', formattedData);
 
-      // Here you would typically send the data to your API
-      // await submitRegistration(formattedData);
+      // Send confirmation email via API
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'eventRegistration',
+          registrationId,
+          // top-level fields for convenience
+          fullName: data.fullName,
+          email: data.email,
+          mobile: `${data.mobileCountryCode || '+91'} ${data.mobile}`,
+          address: data.address,
+          aadharNumber: data.aadharNumber,
+          children: data.children || [],
+          // also include the whole formatted structure if API needs it
+          formattedData,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => '');
+        throw new Error(errorText || 'Failed to send email');
+      }
 
       alert(`Registration submitted successfully!\nRegistration ID: ${registrationId}`);
       // reset();

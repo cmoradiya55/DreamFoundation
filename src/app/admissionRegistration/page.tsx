@@ -95,7 +95,7 @@ const AdmissionRegistration: React.FC = () => {
       // await submitAdmissionRegistration(formattedData);
 
       alert(`Admission registration submitted successfully!\nRegistration ID: ${registrationId}`);
-      reset();
+      // reset();
     } catch (error) {
       console.error('Error submitting admission registration:', error);
       alert('An error occurred while submitting the form. Please try again.');
@@ -104,7 +104,7 @@ const AdmissionRegistration: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
-      <BackgroundIcons />
+      {/* <BackgroundIcons /> */}
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
