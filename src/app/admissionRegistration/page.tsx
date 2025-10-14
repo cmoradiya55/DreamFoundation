@@ -24,7 +24,6 @@ import {
   createDefaultChildData
 } from '../../Utils/formUtils';
 import BackgroundIcons from '../../components/BackgroundIcons/BackgroundIcons';
-import FormNavigation from '../../components/FormNavigation/FormNavigation';
 
 interface ChildData {
   childName: string;
@@ -106,7 +105,6 @@ const AdmissionRegistration: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
       <BackgroundIcons />
-      <FormNavigation />
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">

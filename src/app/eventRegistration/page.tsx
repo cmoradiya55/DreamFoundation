@@ -22,7 +22,6 @@ import {
   createDefaultChildData
 } from '../../Utils/formUtils';
 import BackgroundIcons from '../../components/BackgroundIcons/BackgroundIcons';
-import FormNavigation from '../../components/FormNavigation/FormNavigation';
 
 interface ChildData {
   childName: string;
@@ -106,7 +105,6 @@ const EventRegistration: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
       <BackgroundIcons />
-      <FormNavigation />
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -131,7 +129,7 @@ const EventRegistration: React.FC = () => {
                 </div>
                 Personal Information
               </h2>
-              <p className="text-blue-100 mt-2">Tell us about yourself</p>
+              <p className="text-teal-100 mt-2">Tell us about yourself</p>
             </div>
 
             <div className="p-12">
@@ -144,7 +142,7 @@ const EventRegistration: React.FC = () => {
                   placeholder="Enter your full name"
                   required={true}
                   error={errors.fullName}
-                  icon={<User className="w-4 h-4 text-blue-600" />}
+                  icon={<User className="w-4 h-4 text-teal-600" />}
                 />
 
                 {/* Mobile Number */}
@@ -165,7 +163,7 @@ const EventRegistration: React.FC = () => {
                   type="email"
                   required={true}
                   error={errors.email}
-                  icon={<Mail className="w-4 h-4 text-blue-600" />}
+                  icon={<Mail className="w-4 h-4 text-teal-600" />}
                 />
 
                 {/* Aadhar Number */}
@@ -177,7 +175,7 @@ const EventRegistration: React.FC = () => {
                   type="text"
                   required={true}
                   error={errors.aadharNumber}
-                  icon={<CreditCard className="w-4 h-4 text-blue-600" />}
+                  icon={<CreditCard className="w-4 h-4 text-teal-600" />}
                 />
               </div>
 
@@ -191,7 +189,7 @@ const EventRegistration: React.FC = () => {
                   required={true}
                   error={errors.address}
                   rows={4}
-                  icon={<MapPin className="w-4 h-4 text-blue-600" />}
+                  icon={<MapPin className="w-4 h-4 text-teal-600" />}
                 />
               </div>
             </div>
@@ -245,7 +243,7 @@ const EventRegistration: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-12 py-4 rounded-2xl text-lg font-bold shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-3"
+              className="bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 text-white px-12 py-4 rounded-2xl text-lg font-bold shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-3"
             >
               {isSubmitting ? (
                 <>

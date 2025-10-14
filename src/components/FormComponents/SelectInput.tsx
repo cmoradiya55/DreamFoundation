@@ -35,7 +35,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 }) => {
   return (
     <div className={`space-y-2 ${className}`}>
-      <label htmlFor={name} className="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+      <label htmlFor={name} className="flex text-sm font-semibold text-teal-700 items-center gap-2">
         {icon}
         {label}
         {required && <span className="text-red-500">*</span>}
@@ -49,10 +49,10 @@ const SelectInput: React.FC<SelectInputProps> = ({
               {...field}
               value={field.value as string || ''}
               id={name}
-              className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-100 appearance-none bg-white text-gray-900 ${
+              className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-teal-100 appearance-none bg-white text-gray-900 ${
                 error 
                   ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-100' 
-                  : 'border-gray-200 focus:border-blue-500 focus:bg-blue-50'
+                  : 'border-teal-200 focus:border-teal-500 focus:bg-teal-50'
               }`}
             >
               <option value="" className="text-gray-500">
@@ -67,7 +67,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
           )}
         />
         <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </div>

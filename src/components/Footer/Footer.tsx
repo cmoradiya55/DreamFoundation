@@ -11,7 +11,7 @@ export default function Footer() {
                     <div className={styles.logoSection}>
                         <Link href="/" className={styles.logoLink}>
                             <img 
-                            src="/images/dreamFoundation_Logo.png" 
+                            src="/images/dreamFoundationLogo.png" 
                                 alt="Dream Foundation Logo" 
                                 className={styles.logoImage}
                                 onError={(e) => {
@@ -36,14 +36,35 @@ export default function Footer() {
                         <h3 className={styles.sectionTitle}>Quick Links</h3>
                         <ul className={styles.linksList}>
                             <li><Link href="/" className={styles.footerLink}>Home</Link></li>
-                            <li><Link href="/about" className={styles.footerLink}>About Us</Link></li>
-                            <li><Link href="/programs" className={styles.footerLink}>Programs</Link></li>
                             <li><Link href="/registration" className={styles.footerLink}>Admission Registration</Link></li>
                             <li><Link href="/eventRegistration" className={styles.footerLink}>Event Registration</Link></li>
-                            <li><Link href="/contact" className={styles.footerLink}>Contact</Link></li>
                         </ul>
                     </div>
                     
+                    <div className={styles.contactSection}>
+                        <h3 className={styles.sectionTitle}>Contact</h3>
+                        <ul className={styles.contactList}>
+                            <li className={styles.contactItem}>
+                                <svg className={styles.contactIcon} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <path d="M12 2C8.14 2 5 5.14 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                                </svg>
+                                <span>Dream Foundation, Pune, Maharashtra, India</span>
+                            </li>
+                            <li className={styles.contactItem}>
+                                <svg className={styles.contactIcon} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1C10.07 21 3 13.93 3 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/>
+                                </svg>
+                                <a href="tel:+919999999999" className={styles.footerLink}>+91 99999 99999</a>
+                            </li>
+                            <li className={styles.contactItem}>
+                                <svg className={styles.contactIcon} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                                <a href="mailto:info@dreamfoundation.org" className={styles.footerLink}>info@dreamfoundation.org</a>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div className={styles.socialSection}>
                         <h3 className={styles.sectionTitle}>Follow Us</h3>
                         <div className={styles.socialLinks}>

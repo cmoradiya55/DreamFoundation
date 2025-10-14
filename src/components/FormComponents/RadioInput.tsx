@@ -52,7 +52,7 @@ const RadioInput: React.FC<RadioInputProps> = ({
                     checked={field.value === option.value}
                     className="form-radio"
                   />
-                  <span className="ml-3 text-sm font-medium text-gray-700">{option.label}</span>
+                  <span className="ml-3 text-sm font-medium text-teal-700">{option.label}</span>
                 </label>
               ))}
             </div>
