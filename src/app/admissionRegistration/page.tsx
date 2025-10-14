@@ -8,13 +8,15 @@ import {
   MapPin,
   CreditCard,
   Plus,
-  Calendar,
+  Users,
+  GraduationCap,
   ArrowRight,
   Loader2
 } from 'lucide-react';
 
 import ChildForm from '../../components/ChildForm/ChildForm';
 import { TextInput, MobileInput, TextArea } from '../../components/FormComponents';
+import { validationRules } from '../../Utils/validationRules';
 import {
   formatFormDataForSubmission,
   generateRegistrationId,
@@ -42,7 +44,7 @@ interface FormData {
   children: ChildData[];
 }
 
-const EventRegistration: React.FC = () => {
+const AdmissionRegistration: React.FC = () => {
   const {
     control,
     handleSubmit,
@@ -67,33 +69,6 @@ const EventRegistration: React.FC = () => {
     name: 'children',
   });
 
-  const onSubmit = async (data: FormData) => {
-    try {
-      // Validate form data
-      const validation = validateFormData(data);
-      if (!validation.isValid) {
-        alert(`Please fix the following errors:\n${validation.errors.join('\n')}`);
-        return;
-      }
-
-      // Format data for submission
-      const formattedData = formatFormDataForSubmission(data);
-      const registrationId = generateRegistrationId();
-
-      console.log('Registration ID:', registrationId);
-      console.log('Formatted Form Data:', formattedData);
-
-      // Here you would typically send the data to your API
-      // await submitRegistration(formattedData);
-
-      alert(`Registration submitted successfully!\nRegistration ID: ${registrationId}`);
-      // reset();
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Error submitting form. Please try again.');
-    }
-  };
-
   const addChild = () => {
     append(createDefaultChildData());
   };
@@ -102,36 +77,65 @@ const EventRegistration: React.FC = () => {
     remove(index);
   };
 
+  const onSubmit = async (data: FormData) => {
+    try {
+      // Validate form data
+      const validationResult = validateFormData(data);
+      if (!validationResult.isValid) {
+        alert(`Please fix the following errors:\n${validationResult.errors.join('\n')}`);
+        return;
+      }
+
+      const formattedData = formatFormDataForSubmission(data);
+      const registrationId = generateRegistrationId();
+
+      console.log('Admission Registration ID:', registrationId);
+      console.log('Formatted Form Data:', formattedData);
+
+      // Here you would typically send the data to your API
+      // await submitAdmissionRegistration(formattedData);
+
+      alert(`Admission registration submitted successfully!\nRegistration ID: ${registrationId}`);
+      reset();
+    } catch (error) {
+      console.error('Error submitting admission registration:', error);
+      alert('An error occurred while submitting the form. Please try again.');
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
       <BackgroundIcons />
       <FormNavigation />
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6 shadow-lg">
-            <Calendar className="w-10 h-10 text-white" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-lg">
+            <GraduationCap className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Event Registration
+            Admission Registration
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Join us for an amazing event! Please fill out the form below to complete your registration.
+            Welcome to our educational institution! Please fill out the form below to complete your admission registration.
           </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Personal Information Section */}
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3 p-4">
+            <div className="bg-gradient-to-r from-green-600 to-emerald-700 px-8 py-6">
+              <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
                 </div>
-                Personal Information
-              </h2>
-              <p className="text-blue-100 mt-2">Tell us about yourself</p>
+                <div>
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-3 p-4">
+                    Personal Information
+                  </h2>
+                  <p className="text-green-100 mt-2">Tell us about yourself</p>
+                </div>
+              </div>
             </div>
 
             <div className="p-12">
@@ -144,7 +148,7 @@ const EventRegistration: React.FC = () => {
                   placeholder="Enter your full name"
                   required={true}
                   error={errors.fullName}
-                  icon={<User className="w-4 h-4 text-blue-600" />}
+                  icon={<User className="w-4 h-4 text-green-600" />}
                 />
 
                 {/* Mobile Number */}
@@ -165,7 +169,7 @@ const EventRegistration: React.FC = () => {
                   type="email"
                   required={true}
                   error={errors.email}
-                  icon={<Mail className="w-4 h-4 text-blue-600" />}
+                  icon={<Mail className="w-4 h-4 text-green-600" />}
                 />
 
                 {/* Aadhar Number */}
@@ -177,7 +181,7 @@ const EventRegistration: React.FC = () => {
                   type="text"
                   required={true}
                   error={errors.aadharNumber}
-                  icon={<CreditCard className="w-4 h-4 text-blue-600" />}
+                  icon={<CreditCard className="w-4 h-4 text-green-600" />}
                 />
               </div>
 
@@ -191,53 +195,68 @@ const EventRegistration: React.FC = () => {
                   required={true}
                   error={errors.address}
                   rows={4}
-                  icon={<MapPin className="w-4 h-4 text-blue-600" />}
+                  icon={<MapPin className="w-4 h-4 text-green-600" />}
                 />
               </div>
             </div>
           </div>
 
           {/* Children Information Section */}
-
-          <div>
-            {fields.length === 0 ? (
-              /* No Children - Show Add Child Button */
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={addChild}
-                  className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md mx-auto"
-                >
-                  <Plus className="w-5 h-5" />
-                  Add Child
-                </button>
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 px-8 py-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-3 p-4">
+                    Children Information
+                  </h2>
+                  <p className="text-emerald-100 mt-2">Add details for each child</p>
+                </div>
               </div>
-            ) : (
-              /* Show Children Forms */
-              <div className="space-y-6">
-                {fields.map((field, index) => (
-                  <ChildForm
-                    key={field.id}
-                    index={index}
-                    control={control}
-                    errors={errors}
-                    onRemove={removeChild}
-                  />
-                ))}
+            </div>
 
-                {/* Add Another Child Button */}
-                <div className="flex justify-center pt-4">
+            <div className="p-12">
+              {fields.length === 0 ? (
+                /* No Children - Show Add Child Button */
+                <div className="text-center">
                   <button
                     type="button"
                     onClick={addChild}
-                    className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md mx-auto"
                   >
                     <Plus className="w-5 h-5" />
-                    Add Another Child
+                    Add Child
                   </button>
                 </div>
-              </div>
-            )}
+              ) : (
+                /* Show Children Forms */
+                <div className="space-y-6">
+                  {fields.map((field, index) => (
+                    <ChildForm
+                      key={field.id}
+                      index={index}
+                      control={control}
+                      errors={errors}
+                      onRemove={removeChild}
+                    />
+                  ))}
+
+                  {/* Add Another Child Button */}
+                  <div className="flex justify-center pt-4">
+                    <button
+                      type="button"
+                      onClick={addChild}
+                      className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
+                    >
+                      <Plus className="w-5 h-5" />
+                      Add Another Child
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Submit Button */}
@@ -245,17 +264,17 @@ const EventRegistration: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-12 py-4 rounded-2xl text-lg font-bold shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-3"
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-12 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                  Submitting...
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Processing...
                 </>
               ) : (
                 <>
-                  Submit Registration
-                  <ArrowRight className="w-6 h-6" />
+                  Submit Admission Registration
+                  <ArrowRight className="w-5 h-5" />
                 </>
               )}
             </button>
@@ -266,4 +285,4 @@ const EventRegistration: React.FC = () => {
   );
 };
 
-export default EventRegistration;
+export default AdmissionRegistration;
