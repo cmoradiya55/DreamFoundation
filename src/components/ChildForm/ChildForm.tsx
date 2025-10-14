@@ -35,6 +35,9 @@ interface ChildFormProps {
 }
 
 const educationStandards = [
+  { value: 'tenderCare', label: 'Tender Care' },
+  { value: 'jumpStart', label: 'Jump Start' },
+  { value: 'playHouse', label: 'Play House' },
   { value: 'nursery', label: 'Nursery' },
   { value: 'lkg', label: 'LKG' },
   { value: 'ukg', label: 'UKG' },

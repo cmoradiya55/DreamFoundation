@@ -22,7 +22,6 @@ import {
   createDefaultChildData
 } from '../../Utils/formUtils';
 import BackgroundIcons from '../../components/BackgroundIcons/BackgroundIcons';
-import FormNavigation from '../../components/FormNavigation/FormNavigation';
 
 interface ChildData {
   childName: string;
@@ -83,8 +82,29 @@ const EventRegistration: React.FC = () => {
       console.log('Registration ID:', registrationId);
       console.log('Formatted Form Data:', formattedData);
 
-      // Here you would typically send the data to your API
-      // await submitRegistration(formattedData);
+      // Send confirmation email via API
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'eventRegistration',
+          registrationId,
+          // top-level fields for convenience
+          fullName: data.fullName,
+          email: data.email,
+          mobile: `${data.mobileCountryCode || '+91'} ${data.mobile}`,
+          address: data.address,
+          aadharNumber: data.aadharNumber,
+          children: data.children || [],
+          // also include the whole formatted structure if API needs it
+          formattedData,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => '');
+        throw new Error(errorText || 'Failed to send email');
+      }
 
       alert(`Registration submitted successfully!\nRegistration ID: ${registrationId}`);
       // reset();
@@ -106,7 +126,6 @@ const EventRegistration: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
       <BackgroundIcons />
-      <FormNavigation />
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
