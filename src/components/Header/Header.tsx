@@ -16,7 +16,7 @@ export default function Header() {
                 <div className={styles.logo}>
                     <Link href="/" className={styles.logoLink}>
                         <img 
-                            src="/images/dreamFoundation_Logo.png" 
+                            src="/images/dreamFoundationLogo.png" 
                             alt="Dream Foundation Logo" 
                             className={styles.logoImage}
                             onError={(e) => {

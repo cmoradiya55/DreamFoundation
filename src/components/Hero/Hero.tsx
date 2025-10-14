@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './Hero.module.css';
@@ -11,30 +12,12 @@ const Hero = () => {
 
     // Array of slide images - you can replace these with actual image paths
     const slideImages = [
-        {
-            src: '/images/canva_1.webp',
-            fallback: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-        },
-        {
-            src: '/images/canva_2.webp',
-            fallback: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-        },
-        {
-            src: '/images/canva_3.webp',
-            fallback: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
-        },
-        {
-            src: '/images/canva_4.webp',
-            fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
-        },
-        {
-            src: '/images/canva_5.webp',
-            fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
-        },
-        {
-            src: '/images/canva_6.webp',
-            fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
-        }
+        { src: '/images/canva_2.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+        { src: '/images/canva_1.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+        // { src: '/images/canva_3.webp', fallback: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+        { src: '/images/canva_4.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+        { src: '/images/canva_5.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+        { src: '/images/canva_6.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }
     ];
 
     // Auto slide functionality with setTimeout
@@ -43,7 +26,7 @@ const Hero = () => {
             setCurrentImageIndex((prevIndex) =>
                 prevIndex === slideImages.length - 1 ? 0 : prevIndex + 1
             );
-        }, 8000); // Change slide every 8 seconds
+        }, 10000);
 
         return () => clearTimeout(slideInterval);
     }, [currentImageIndex, slideImages.length]);
@@ -58,14 +41,19 @@ const Hero = () => {
                         {slideImages.map((slide, index) => (
                             <div
                                 key={index}
-                                className={`${styles.slide} ${index === currentImageIndex ? styles.activeSlide : ''
-                                    }`}
-                                style={{
-                                    background: slide.fallback,
-                                    backgroundImage: `url(${slide.src})`,
-                                }}
+                                className={`${styles.slide} ${index === currentImageIndex ? styles.activeSlide : ''}`}
+                                style={{ background: slide.fallback }}
                             >
-                                {/* Overlay for better text readability */}
+                                <div className={styles.slideMedia}>
+                                    <Image
+                                        src={slide.src}
+                                        alt={`Slide ${index + 1}`}
+                                        fill
+                                        sizes="100vw"
+                                        priority={index === 0}
+                                        className={styles.slideImage}
+                                    />
+                                </div>
                                 <div className={styles.slideOverlay}></div>
                             </div>
                         ))}
@@ -95,6 +83,7 @@ const Hero = () => {
                         </div>
                     </div>
                 </section>
+
 
                 {/* About Section */}
                 <section className={styles.aboutSection}>

@@ -39,12 +39,12 @@ const BackgroundIcons: React.FC = () => {
   ];
 
   const colors = [
-    'text-gray-400',
-    'text-gray-500',
-    'text-blue-300',
-    'text-purple-300',
-    'text-indigo-300',
-    'text-slate-400'
+    'text-teal-200',
+    'text-teal-300',
+    'text-teal-400',
+    'text-emerald-200',
+    'text-emerald-300',
+    'text-cyan-200'
   ];
 
   // Generate random icon data with collision detection

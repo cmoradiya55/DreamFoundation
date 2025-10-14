@@ -30,7 +30,7 @@ const TextArea: React.FC<TextAreaProps> = ({
 }) => {
   return (
     <div className={`space-y-2 ${className}`}>
-      <label htmlFor={name} className="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+      <label htmlFor={name} className="flex text-sm font-semibold text-teal-700 items-center gap-2">
         {icon}
         {label}
         {required && <span className="text-red-500">*</span>}
@@ -45,10 +45,10 @@ const TextArea: React.FC<TextAreaProps> = ({
             id={name}
             rows={rows}
             placeholder={placeholder}
-            className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-100 resize-none placeholder:text-gray-500 text-gray-900 ${
+            className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-teal-100 resize-none placeholder:text-gray-500 text-gray-900 ${
               error 
                 ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-100' 
-                : 'border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white'
+                : 'border-teal-200 bg-teal-50 focus:border-teal-500 focus:bg-white'
             }`}
           />
         )}
