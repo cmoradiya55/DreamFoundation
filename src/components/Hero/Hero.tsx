@@ -50,7 +50,6 @@ const Hero = () => {
 
     return (
         <>
-            <Header />
             <main className={styles.main}>
 
                 {/* Hero Section with Image Slider */}
@@ -162,7 +161,6 @@ const Hero = () => {
                 </section>
             </main>
 
-            <Footer />
         </>
     );
 };

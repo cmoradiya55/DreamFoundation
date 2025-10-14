@@ -1,9 +1,11 @@
+"use client";
+
 import Link from 'next/link';
 import styles from './Header.module.css';
 
 const navLinks = [
     { id: 1, title: 'HOME', path: "/" },
-    { id: 2, title: 'ADMISSION REGISTRATION', path: "/registration" },
+    { id: 2, title: 'ADMISSION REGISTRATION', path: "/admissionRegistration" },
     { id: 3, title: 'EVENT REGISTRATION', path: "/eventRegistration" },
 ];
 
