@@ -579,6 +579,30 @@ export async function POST(req) {
         // Send email to admin
         await transporter.sendMail(mailOptions);
 
+        // Store registration data in admin system
+        if (body.formType === 'admissionRegistration' || body.formType === 'eventRegistration') {
+            try {
+                await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/admin/registrations`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: body.formType === 'admissionRegistration' ? 'admission' : 'event',
+                        fullName: body.fullName,
+                        email: body.email,
+                        mobile: body.mobile,
+                        address: body.address,
+                        aadharNumber: body.aadharNumber,
+                        children: body.children || [],
+                        registrationId: body.registrationId
+                    }),
+                });
+            } catch (error) {
+                console.error('Error storing registration data:', error);
+            }
+        }
+
         // Send confirmation email to applicant (for admission or event registration)
         if (body.formType === 'admissionRegistration' || body.formType === 'eventRegistration') {
             const confirmationEmail = {

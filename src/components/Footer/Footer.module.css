@@ -134,37 +134,82 @@
     margin: 0;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
+/* Responsive Design */
+@media (max-width: 1014px) {
     .footerContent {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 30px;
+    }
+    
+    .logoSection {
+        grid-column: span 2;
         text-align: center;
     }
     
     .logoLink {
         justify-content: center;
     }
-    
-    .socialLinks {
-        align-items: center;
-    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .container {
         padding: 30px 15px 0;
     }
     
     .footerContent {
+        grid-template-columns: 1fr;
         gap: 25px;
+        text-align: center;
+    }
+    
+    .logoSection {
+        grid-column: span 1;
     }
     
     .logoImage {
-        height: 72px; /* mobile footer logo */
+        height: 80px;
     }
     
     .logoText {
-        font-size: 20px;
+        font-size: 22px;
+    }
+    
+    .socialLinks {
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 25px 10px 0;
+    }
+    
+    .footerContent {
+        gap: 20px;
+    }
+    
+    .logoImage {
+        height: 60px;
+    }
+    
+    .logoText {
+        font-size: 18px;
+    }
+    
+    .sectionTitle {
+        font-size: 16px;
+    }
+    
+    .footerLink,
+    .socialLink,
+    .contactItem {
+        font-size: 13px;
+    }
+    
+    .socialLinks {
+        gap: 8px;
     }
 }
