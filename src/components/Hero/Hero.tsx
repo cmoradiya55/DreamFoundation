@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './Hero.module.css';
+import PaddingWrapper from '../PaddingWrapper/PaddingWrapper';
 
 const Hero = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -34,56 +35,33 @@ const Hero = () => {
     return (
         <>
             <main className={styles.main}>
-
-                {/* Hero Section with Image Slider */}
-                <section className={styles.heroSection}>
-                    <div className={styles.imageSlider}>
-                        {slideImages.map((slide, index) => (
-                            <div
-                                key={index}
-                                className={`${styles.slide} ${index === currentImageIndex ? styles.activeSlide : ''}`}
-                                style={{ background: slide.fallback }}
-                            >
-                                <div className={styles.slideMedia}>
-                                    <Image
-                                        src={slide.src}
-                                        alt={`Slide ${index + 1}`}
-                                        fill
-                                        sizes="100vw"
-                                        priority={index === 0}
-                                        className={styles.slideImage}
-                                    />
-                                </div>
-                                <div className={styles.slideOverlay}></div>
-                            </div>
-                        ))}
-
-                        {/* Slide Content */}
-                        <div className={styles.slideContent}>
-                            <div className={styles.container}>
-
-
-
-                            </div>
-                        </div>
-
-
-
-
-                        {/* Slide Indicators */}
-                        <div className={styles.slideIndicators}>
-                            {slideImages.map((_, index) => (
-                                <button
+                
+                {/* Hero Section with Image Slider */}                
+                    <section className={styles.heroSection}>
+                        <div className={styles.imageSlider}>
+                            {slideImages.map((slide, index) => (
+                                <div
                                     key={index}
-                                    className={`${styles.indicator} ${index === currentImageIndex ? styles.activeIndicator : ''
-                                        }`}
-                                    onClick={() => setCurrentImageIndex(index)}
-                                />
+                                    className={`${styles.slide} ${index === currentImageIndex ? styles.activeSlide : ''}`}
+                                >
+                                    <div className={styles.slideMedia}>
+                                        <PaddingWrapper>
+                                        <Image
+                                            src={slide.src}
+                                            alt={`Slide ${index + 1}`}
+                                            fill
+                                            sizes="100vw"
+                                            priority={index === 0}
+                                            className={styles.slideImage}
+                                        />
+                                        </PaddingWrapper>
+                                    </div>
+                                </div>
                             ))}
-                        </div>
-                    </div>
-                </section>
 
+                       
+                        </div>
+                    </section>
 
                 {/* About Section */}
                 <section className={styles.aboutSection}>

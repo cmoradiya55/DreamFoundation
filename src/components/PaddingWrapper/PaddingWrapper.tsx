@@ -8,7 +8,7 @@ interface PaddingWrapperProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const PaddingWrapper: React.FC<PaddingWrapperProps> = ({ paddingClasses = 'p-4 md:p-6 2xl:p-0', className = '', ...props }) => {
-  const classes = cx(paddingClasses, className, "w-full max-w-[1250px]");
+  const classes = cx(paddingClasses, className, "w-full max-w-[1250px] mx-auto");
   return (
     <div className={classes} {...props}>
       {props.children}

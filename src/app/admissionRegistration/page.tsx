@@ -68,13 +68,7 @@ const AdmissionRegistration: React.FC = () => {
     name: 'children',
   });
 
-  const addChild = () => {
-    append(createDefaultChildData());
-  };
 
-  const removeChild = (index: number) => {
-    remove(index);
-  };
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -90,9 +84,33 @@ const AdmissionRegistration: React.FC = () => {
 
       console.log('Admission Registration ID:', registrationId);
       console.log('Formatted Form Data:', formattedData);
+     
+      // Send confirmation email via API
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'admissionRegistration',
+          registrationId,
+          // top-level fields for convenience
+          fullName: data.fullName,
+          email: data.email,
+          mobile: `${data.mobileCountryCode || '+91'} ${data.mobile}`,
+          address: data.address,
+          aadharNumber: data.aadharNumber,
+          children: data.children || [],
+          
+          // also include the whole formatted structure if API needs it
+          formattedData,
+        }),
+      });
 
-      // Here you would typically send the data to your API
-      // await submitAdmissionRegistration(formattedData);
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => '');
+        throw new Error(errorText || 'Failed to send email');
+      }
+
+
 
       alert(`Admission registration submitted successfully!\nRegistration ID: ${registrationId}`);
       // reset();
@@ -101,6 +119,16 @@ const AdmissionRegistration: React.FC = () => {
       alert('An error occurred while submitting the form. Please try again.');
     }
   };
+
+  const addChild = () => {
+    append(createDefaultChildData());
+  };
+
+  const removeChild = (index: number) => {
+    remove(index);
+  };
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">

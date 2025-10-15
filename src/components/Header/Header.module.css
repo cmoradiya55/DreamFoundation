@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 130px;
+    height: 80px;
 }
 
 .logo {
@@ -55,6 +55,37 @@
     align-items: center;
 }
 
+/* Mobile Menu Toggle */
+.menuToggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 5px;
+    background: none;
+    border: none;
+}
+
+.menuToggle span {
+    width: 25px;
+    height: 3px;
+    background-color: #ccfbf1;
+    margin: 3px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.menuToggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menuToggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menuToggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
 .navItem {
     margin: 0;
 }
@@ -79,47 +110,68 @@
     border-color: #0d9488;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .container {
-        padding: 0 15px;
-        height: 96px;
+/* Responsive Design */
+@media (max-width: 1014px) {
+    .nav {
+        display: none;
     }
     
-    .logoImage {
-        height: 80px;
+    .menuToggle {
+        display: flex;
     }
     
-    .logoText {
-        font-size: 20px;
+    .navList.mobileOpen {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #042f2e;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(4, 47, 46, 0.3);
+        border-top: 1px solid rgba(240, 253, 250, 0.08);
     }
     
-    .navList {
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-    
-    .navLink {
-        font-size: 12px;
-        padding: 8px 15px;
+    .navList.mobileOpen .navLink {
+        padding: 15px 20px;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid rgba(240, 253, 250, 0.05);
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .container {
-        flex-direction: column;
-        height: auto;
-        padding: 10px 15px;
-        gap: 15px;
+        padding: 0 15px;
+        height: 70px;
     }
     
-    .navList {
-        gap: 10px;
-        justify-content: center;
+    .logoImage {
+        height: 60px;
     }
     
-    .navLink {
-        font-size: 11px;
-        padding: 6px 12px;
+    .logoText {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+        height: 60px;
+    }
+    
+    .logoImage {
+        height: 50px;
+    }
+    
+    .logoText {
+        font-size: 16px;
+    }
+    
+    .menuToggle span {
+        width: 20px;
+        height: 2px;
     }
 }
