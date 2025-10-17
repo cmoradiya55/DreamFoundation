@@ -118,8 +118,21 @@
 }
 
 .contactIcon {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0; /* keep icon stable when text wraps */
+}
+
+/* Improve address wrapping and alignment on desktop */
+.contactAddress {
+    align-items: flex-start; /* top-align icon with multi-line text */
+}
+.contactAddress span {
+    display: block;
+    max-width: 420px; /* constrain width to encourage ~3 lines */
+    line-height: 1.6;
+    white-space: normal;
+    word-break: break-word;
 }
 
 .bottomBar {
@@ -136,6 +149,11 @@
 
 /* Responsive Design */
 @media (max-width: 1014px) {
+    .contactAddress span { max-width: 520px; }
+    /* .contactIcon {
+        width: 18px;
+        height: 18px;
+    } */
     .footerContent {
         grid-template-columns: 1fr 1fr;
         gap: 30px;
@@ -180,6 +198,33 @@
         justify-content: center;
         flex-wrap: wrap;
     }
+
+    /* Center entire contact block */
+    .contactSection { 
+        text-align: center; 
+    }
+
+    .contactList { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 8px; 
+        align-items: center; 
+    }
+
+    .contactItem {
+        justify-content: center;
+        width: 100%;
+        max-width: 540px;
+    }
+
+    .contactAddress { align-items: center; }
+    .contactAddress span { max-width: 540px; }
+
+    /* Order contact items: phone, email, then address */
+    .contactPhone { order: 1; }
+    .contactEmail { order: 2; }
+    .contactAddress { order: 3; }
+          
 }
 
 @media (max-width: 480px) {
@@ -207,6 +252,7 @@
     .socialLink,
     .contactItem {
         font-size: 13px;
+        /* margin-left: 80px; */
     }
     
     .socialLinks {

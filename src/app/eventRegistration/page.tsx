@@ -64,6 +64,13 @@ const EventRegistration: React.FC = () => {
     },
   });
 
+  const eventDetail = {
+    eventName: "Dream Foundation",
+    eventDate: "9th November 2025",
+    eventTime: "5 pm to onwards",
+    eventLocation: "Shaneshwar party plot, Mavdi main road, Rajkot",
+  }
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'children',
@@ -125,6 +132,7 @@ const EventRegistration: React.FC = () => {
   const removeChild = (index: number) => {
     remove(index);
   };
+
 
 
   return (

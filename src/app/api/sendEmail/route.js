@@ -1,227 +1,5 @@
-// import nodemailer from "nodemailer";
-// import { NextResponse } from "next/server";
-
-// export async function POST(req) {
-//     // Enhanced logging
-//     let body;
-//     try {
-//         body = await req.json();
-//     } catch (err) {
-//         return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
-//     }
-
-//     let emailContent;
-
-//     if (body.formType === 'contactUS') {
-//         const { name, businessName, email, mobile, message } = body;
-//         if (!name || !email || !message) {
-//             return NextResponse.json(
-//                 { error: "Name, email, and message are required." },
-//                 { status: 400 }
-//             );
-//         }
-
-//         emailContent = `
-//             📩 New Contact Request
-
-//             Name: ${name}
-//             Business Name: ${businessName || "-"}
-//             Email: ${email}
-//             Mobile: ${mobile || "-"}
-
-//             Message:
-//             ${message}
-//         `;
-
-//     } else if (body.formType === 'admissionRegistration') {
-//         const {
-//             fullName,
-//             email,
-//             phone,
-//             dateOfBirth,
-//             address,
-//             course,
-//             previousEducation,
-//             emergencyContact,
-//             emergencyPhone,
-//             additionalInfo
-//         } = body;
-
-//         if (!fullName || !email || !phone || !dateOfBirth || !address || !course || !emergencyContact || !emergencyPhone) {
-//             return NextResponse.json(
-//                 { error: "Please fill in all required fields." },
-//                 { status: 400 }
-//             );
-//         }
-
-//         emailContent = `
-//             🎓 New Admission Registration
-
-//             Student Information:
-//             Name: ${fullName}
-//             Email: ${email}
-//             Phone: ${phone}
-//             Date of Birth: ${dateOfBirth}
-//             Address: ${address}
-
-//             Course Details:
-//             Course of Interest: ${course}
-//             Previous Education: ${previousEducation || "Not specified"}
-
-//             Emergency Contact:
-//             Name: ${emergencyContact}
-//             Phone: ${emergencyPhone}
-
-//             Additional Information:
-//             ${additionalInfo || "None provided"}
-
-//             Registration submitted on: ${new Date().toLocaleString()}
-//         `;
-
-//     } else if (body.formType === 'sampleRequest') {
-//         const {
-//             name,
-//             businessName,
-//             email,
-//             mobile,
-//             website,
-//             address,
-//             message,
-//             selectedProducts
-//         } = body;
-
-//         if (!selectedProducts || !Array.isArray(selectedProducts) || selectedProducts.length === 0) {
-//             return NextResponse.json(
-//                 { error: "Please select at least one product." },
-//                 { status: 400 }
-//             );
-//         }
-//         const productsList = selectedProducts.map(product => `- ${product}`).join('\n');
-
-//         emailContent = `
-//             📦 New Sample Request
-
-//             Name: ${name}
-//             Business Name: ${businessName}
-//             Email: ${email}
-//             Mobile: ${mobile}
-//             Website: ${website || "-"}
-//             Address: ${address}
-
-//             Selected Products:
-//             ${productsList}
-
-//             Additional Information:
-//             ${message || ""}
-//         `;
-//     }
-
-
-//     try {
-//         // Check if email password is configured
-//         if (!process.env.EMAIL_PASSWORD) {
-//             console.error("EMAIL_PASSWORD environment variable is not set");
-//             return NextResponse.json(
-//                 { error: "Email configuration missing" },
-//                 { status: 500 }
-//             );
-//         }
-
-//         const transporter = nodemailer.createTransport({
-//             service: "Gmail",
-//             auth: {
-//                 user: process.env.SEND_EMAIL,
-//                 pass: process.env.EMAIL_PASSWORD,
-//             },
-//         });
-
-//         const mailOptions = {
-//             from: process.env.SEND_EMAIL, 
-//             to: "mvinfinus@gmail.com", 
-//             replyTo: body.email,
-//             subject: body.formType === 'contactUS' ?  `Contact Request from ${body.name}` : 
-//                      body.formType === 'admissionRegistration' ? `New Admission Registration - ${body.fullName}` :
-//                      `Sample Request from ${body.businessName}`,
-//             text: emailContent,
-//         };
-
-//         // Send email to admin
-//         await transporter.sendMail(mailOptions);
-
-//         // Send confirmation email to applicant (for admission registration only)
-//         if (body.formType === 'admissionRegistration') {
-//             const confirmationEmail = {
-//                 from: process.env.SEND_EMAIL,
-//                 to: body.email,
-//                 subject: "Registration Confirmation - Dream Foundation",
-//                 text: `
-// Dear ${body.fullName},
-
-// Thank you for your interest in Dream Foundation!
-
-// We have successfully received your admission registration for the "${body.course}" program.
-
-// Registration Details:
-// - Name: ${body.fullName}
-// - Email: ${body.email}
-// - Phone: ${body.phone}
-// - Course: ${body.course}
-// - Registration Date: ${new Date().toLocaleDateString()}
-
-// What happens next?
-// 1. Our admissions team will review your application
-// 2. We will contact you within 3-5 business days
-// 3. If selected, we will schedule an interview/orientation session
-
-// Important Information:
-// - Please keep this email for your records
-// - If you have any questions, reply to this email or call us
-// - Make sure to check your email regularly for updates
-
-// We appreciate your interest in joining our educational community and look forward to potentially welcoming you to Dream Foundation.
-
-// Best regards,
-// Dream Foundation Admissions Team
-
-// Contact Information:
-// Email: ${process.env.SEND_EMAIL}
-// Website: www.dreamfoundation.org
-
-// ---
-// This is an automated confirmation email. Please do not reply directly to this message.
-//                 `
-//             };
-
-//             await transporter.sendMail(confirmationEmail);
-//         }
-
-//         const successMessage = body.formType === 'admissionRegistration' 
-//             ? "Registration submitted successfully! Check your email for confirmation." 
-//             : body.formType === 'contactUS' 
-//             ? "Contact request submitted successfully"
-//             : "Sample request submitted successfully";
-
-//         return NextResponse.json(
-//             { success: true, message: successMessage },
-//             { status: 200 }
-//         );
-//     } catch (error) {
-//         console.error("Error sending email:", error);
-
-//         return NextResponse.json(
-//             { error: "Failed to send email" },
-//             { status: 500 }
-            
-//         );
-//     }
-// }
-
-
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
-import path from "path";
-import fs from "fs";
-// import puppeteer from "puppeteer";
 
 // Ensure this route runs on the Node.js runtime (required for nodemailer)
 export const runtime = 'nodejs';
@@ -251,45 +29,41 @@ export async function POST(req) {
 
     if (body.formType === 'admissionRegistration') {
         const {
+            registrationId,
             fullName,
             email,
-            phone,
+            mobile,
             dateOfBirth,
             address,
-            course,
-            previousEducation,
-            emergencyContact,
-            emergencyPhone,
-            additionalInfo
+            aadharNumber,
+            children = []
         } = body;
 
-        if (!fullName || !email || !phone || !dateOfBirth || !address || !course || !emergencyContact || !emergencyPhone) {
+        if (!fullName || !email || !mobile || !dateOfBirth || !address || !aadharNumber) {
             return NextResponse.json(
                 { error: "Please fill in all required fields." },
                 { status: 400 }
             );
         }
 
+        const childrenListText = children.length
+            ? children.map((c, i) => `• Child ${i + 1}: ${c.childName || '-'} | DOB: ${c.childDateOfBirth || '-'} | Father: ${c.fatherName || '-'} | Mother: ${c.motherName || '-'} | Std: ${c.educationStandard || '-'}`).join("\n")
+            : 'No children added';
+
         emailContent = `
             🎓 New Admission Registration - Dream Foundation
 
-            STUDENT INFORMATION:
+            REGISTRATION INFO:
+            • Registration ID: ${registrationId || '-'}
             • Full Name: ${fullName}
             • Email: ${email}
-            • Phone: ${phone}
+            • Mobile: ${mobile}
             • Date of Birth: ${dateOfBirth}
+            • Aadhar: ${aadharNumber}
             • Address: ${address}
 
-            COURSE DETAILS:
-            • Course of Interest: ${course}
-            • Previous Education: ${previousEducation || "Not specified"}
-
-            EMERGENCY CONTACT:
-            • Name: ${emergencyContact}
-            • Phone: ${emergencyPhone}
-
-            ADDITIONAL INFORMATION:
-            ${additionalInfo || "None provided"}
+            CHILDREN INFORMATION:
+            ${childrenListText}
 
             Registration submitted on: ${new Date().toLocaleString()}
 
@@ -300,63 +74,68 @@ export async function POST(req) {
             ${foundationInfo.phone}
         `;
 
+        const childrenRows = children.length
+            ? children.map((c, i) => `
+                <tr>
+                    <td style="padding:6px;border:1px solid #e5e7eb;">${i + 1}</td>
+                    <td style="padding:6px;border:1px solid #e5e7eb;">${c.childName || '-'}</td>
+                    <td style="padding:6px;border:1px solid #e5e7eb;">${c.childDateOfBirth || '-'}</td>
+                    <td style="padding:6px;border:1px solid #e5e7eb;">${c.fatherName || '-'}</td>
+                    <td style="padding:6px;border:1px solid #e5e7eb;">${c.motherName || '-'}</td>
+                    <td style="padding:6px;border:1px solid #e5e7eb;">${c.educationStandard || '-'}</td>
+                </tr>
+            `).join('')
+            : '<tr><td colspan="6" style="padding:8px;border:1px solid #e5e7eb;text-align:center;color:#6b7280;">No children added</td></tr>';
+
         htmlEmailContent = `
             <!DOCTYPE html>
             <html>
                 <head>
+                    <meta charset="utf-8" />
                     <style>
-                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                        .header { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 20px; text-align: center; }
-                        .content { padding: 20px; }
-                        .info-section { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #28a745; }
-                        .footer { background: #343a40; color: white; padding: 15px; text-align: center; font-size: 12px; }
-                        .field { margin: 8px 0; }
-                        .label { font-weight: bold; color: #495057; }
-                        .section-title { color: #28a745; margin-bottom: 10px; }
+                        body{font-family:Arial,sans-serif;color:#111827;}
+                        .header{background:linear-gradient(135deg,#28a745,#20c997);color:#fff;padding:20px;text-align:center}
+                        .section{padding:16px;background:#ffffff;margin:12px;border:1px solid #e5e7eb;border-radius:8px}
+                        .muted{color:#6b7280}
+                        table{border-collapse:collapse;width:100%;margin-top:8px}
                     </style>
                 </head>
                 <body>
                     <div class="header">
-                        <h1>🎓 New Admission Registration</h1>
-                        <h2>${foundationInfo.tagline}</h2>
+                    <h1>🎓 Admission Registration</h1>
+                    <h3>${foundationInfo.tagline}</h3>
                     </div>
-                    
-                    <div class="content">
-                        <div class="info-section">
-                            <h3 class="section-title">Student Information</h3>
-                            <div class="field"><span class="label">Full Name:</span> ${fullName}</div>
-                            <div class="field"><span class="label">Email:</span> ${email}</div>
-                            <div class="field"><span class="label">Phone:</span> ${phone}</div>
-                            <div class="field"><span class="label">Date of Birth:</span> ${dateOfBirth}</div>
-                            <div class="field"><span class="label">Address:</span> ${address}</div>
-                        </div>
-                        
-                        <div class="info-section">
-                            <h3 class="section-title">Course Details</h3>
-                            <div class="field"><span class="label">Course of Interest:</span> ${course}</div>
-                            <div class="field"><span class="label">Previous Education:</span> ${previousEducation || "Not specified"}</div>
-                        </div>
-                        
-                        <div class="info-section">
-                            <h3 class="section-title">Emergency Contact</h3>
-                            <div class="field"><span class="label">Name:</span> ${emergencyContact}</div>
-                            <div class="field"><span class="label">Phone:</span> ${emergencyPhone}</div>
-                        </div>
-                        
-                        <div class="info-section">
-                            <h3 class="section-title">Additional Information</h3>
-                            <p>${additionalInfo ? additionalInfo.replace(/\n/g, '<br>') : "None provided"}</p>
-                        </div>
-                        
-                        <div style="background: #e7f3ff; padding: 10px; border-radius: 5px; margin-top: 20px;">
-                            <strong>Registration submitted on:</strong> ${new Date().toLocaleString()}
-                        </div>
+                    <div class="section">
+                    <h3>Admission Registration Info</h3>
+                    <p><strong>Registration ID:</strong> ${registrationId || '-'}</p>
+                    <p><strong>Full Name:</strong> ${fullName}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Mobile:</strong> ${mobile}</p>
+                    <p><strong>Date of Birth:</strong> ${dateOfBirth}</p>
+                    <p><strong>Aadhar:</strong> ${aadharNumber}</p>
+                    <p><strong>Address:</strong> ${address}</p>
                     </div>
-                    
-                    <div class="footer">
-                        <p><strong>${foundationInfo.name}</strong></p>
-                        <p>${foundationInfo.address} | ${foundationInfo.phone}</p>
-                        <p>${foundationInfo.tagline}</p>
+                    <div class="section">
+                    <h3>Children</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">#</th>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Name</th>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">DOB</th>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Father</th>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Mother</th>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Std</th>
+                        </tr>
+                        </thead>
+                        <tbody>${childrenRows}</tbody>
+                    </table>
+                    <p class="muted">Submitted on ${new Date().toLocaleString()}</p>
+                    </div>
+                    <div class="section muted" style="text-align:center">
+                    <div><strong>${foundationInfo.name}</strong></div>
+                    <div>${foundationInfo.address} | ${foundationInfo.phone}</div>
+                    <div>${foundationInfo.tagline}</div>
                     </div>
                 </body>
             </html>
@@ -395,7 +174,7 @@ export async function POST(req) {
             • Name: ${fullName}
             • Email: ${email}
             • Mobile: ${mobile}
-            • Parent DOB: ${dateOfBirth || '-'}
+            • DOB: ${dateOfBirth || '-'}
             • Aadhar: ${aadharNumber || '-'}
             • Address: ${address}
 
@@ -416,12 +195,13 @@ export async function POST(req) {
                 <tr>
                     <td style="padding:6px;border:1px solid #e5e7eb;">${i + 1}</td>
                     <td style="padding:6px;border:1px solid #e5e7eb;">${c.childName || '-'}</td>
+                    <td style="padding:6px;border:1px solid #e5e7eb;">${c.childDateOfBirth || '-'}</td>
                     <td style="padding:6px;border:1px solid #e5e7eb;">${c.fatherName || '-'}</td>
                     <td style="padding:6px;border:1px solid #e5e7eb;">${c.motherName || '-'}</td>
                     <td style="padding:6px;border:1px solid #e5e7eb;">${c.educationStandard || '-'}</td>
                 </tr>
             `).join('')
-            : '<tr><td colspan="5" style="padding:8px;border:1px solid #e5e7eb;text-align:center;color:#6b7280;">No children added</td></tr>';
+            : '<tr><td colspan="6" style="padding:8px;border:1px solid #e5e7eb;text-align:center;color:#6b7280;">No children added</td></tr>';
 
         htmlEmailContent = `
             <!DOCTYPE html>
@@ -442,12 +222,12 @@ export async function POST(req) {
                     <h3>${foundationInfo.tagline}</h3>
                     </div>
                     <div class="section">
-                    <h3>Registration Info</h3>
+                    <h3>Event Registration Info</h3>
                     <p><strong>Registration ID:</strong> ${registrationId || '-'}</p>
                     <p><strong>Name:</strong> ${fullName}</p>
                     <p><strong>Email:</strong> ${email}</p>
                     <p><strong>Mobile:</strong> ${mobile}</p>
-                    <p><strong>Parent DOB:</strong> ${dateOfBirth || '-'}</p>
+                    <p><strong>DOB:</strong> ${dateOfBirth || '-'}</p>
                     <p><strong>Aadhar:</strong> ${aadharNumber || '-'}</p>
                     <p><strong>Address:</strong> ${address}</p>
                     </div>
@@ -458,7 +238,7 @@ export async function POST(req) {
                         <tr>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">#</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Name</th>
-                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Child DOB</th>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">DOB</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Father</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Mother</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Std</th>
@@ -476,7 +256,7 @@ export async function POST(req) {
                 </body>
             </html>
         `;
-
+       
         // Build a letterhead-like HTML that we will render to PDF using Puppeteer (disabled for now)
         // const resolvedLetterheadPath = path.join(process.cwd(), 'public', letterheadPath.replace(/^\//, ''));
         // let letterheadBase64 = '';

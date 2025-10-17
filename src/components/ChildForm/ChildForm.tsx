@@ -125,7 +125,7 @@ const ChildForm: React.FC<ChildFormProps> = ({ index, control, errors, onRemove 
 
          {/* Child Date of Birth */}
          <DateInput
-          name={`children.${index}.dateOfBirth`}
+          name={`children.${index}.childDateOfBirth`}
           control={control}
           label="Child Date of Birth"
           required={true}
