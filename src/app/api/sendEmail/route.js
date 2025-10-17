@@ -221,7 +221,7 @@ import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
-import puppeteer from "puppeteer";
+// import puppeteer from "puppeteer";
 
 // Ensure this route runs on the Node.js runtime (required for nodemailer)
 export const runtime = 'nodejs';
@@ -238,8 +238,8 @@ export async function POST(req) {
     
     let emailContent;
     let htmlEmailContent;
-    // holds generated PDF buffer when formType === 'eventRegistration'
-    let pdfBuffer;
+    // holds generated PDF buffer when formType === 'eventRegistration' (disabled for now)
+    // let pdfBuffer;
 
     // Dream Foundation details
     const foundationInfo = {
@@ -366,6 +366,7 @@ export async function POST(req) {
         const {
             registrationId,
             fullName,
+            dateOfBirth,
             email,
             mobile,
             address,
@@ -383,7 +384,7 @@ export async function POST(req) {
         }
 
         const childrenListText = children.length
-            ? children.map((c, i) => `• Child ${i + 1}: ${c.childName || '-'} | Father: ${c.fatherName || '-'} | Mother: ${c.motherName || '-'} | Std: ${c.educationStandard || '-'}`).join("\n")
+            ? children.map((c, i) => `• Child ${i + 1}: ${c.childName || '-'} | DOB: ${c.childDateOfBirth || '-'} | Father: ${c.fatherName || '-'} | Mother: ${c.motherName || '-'} | Std: ${c.educationStandard || '-'}`).join("\n")
             : 'No children added';
 
         emailContent = `
@@ -394,6 +395,7 @@ export async function POST(req) {
             • Name: ${fullName}
             • Email: ${email}
             • Mobile: ${mobile}
+            • Parent DOB: ${dateOfBirth || '-'}
             • Aadhar: ${aadharNumber || '-'}
             • Address: ${address}
 
@@ -445,6 +447,7 @@ export async function POST(req) {
                     <p><strong>Name:</strong> ${fullName}</p>
                     <p><strong>Email:</strong> ${email}</p>
                     <p><strong>Mobile:</strong> ${mobile}</p>
+                    <p><strong>Parent DOB:</strong> ${dateOfBirth || '-'}</p>
                     <p><strong>Aadhar:</strong> ${aadharNumber || '-'}</p>
                     <p><strong>Address:</strong> ${address}</p>
                     </div>
@@ -455,6 +458,7 @@ export async function POST(req) {
                         <tr>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">#</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Name</th>
+                            <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Child DOB</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Father</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Mother</th>
                             <th style="text-align:left;padding:6px;border:1px solid #e5e7eb;">Std</th>
@@ -473,57 +477,19 @@ export async function POST(req) {
             </html>
         `;
 
-        // Build a letterhead-like HTML that we will render to PDF using Puppeteer
-        const resolvedLetterheadPath = path.join(process.cwd(), 'public', letterheadPath.replace(/^\//, ''));
-        let letterheadBase64 = '';
-        try {
-            const imgBuf = fs.readFileSync(resolvedLetterheadPath);
-            const ext = path.extname(resolvedLetterheadPath).toLowerCase().replace('.', '') || 'jpeg';
-            letterheadBase64 = `data:image/${ext};base64,${imgBuf.toString('base64')}`;
-        } catch (e) {
-            // If letterhead file is missing, continue without background
-            letterheadBase64 = '';
-        }
+        // Build a letterhead-like HTML that we will render to PDF using Puppeteer (disabled for now)
+        // const resolvedLetterheadPath = path.join(process.cwd(), 'public', letterheadPath.replace(/^\//, ''));
+        // let letterheadBase64 = '';
+        // try {
+        //     const imgBuf = fs.readFileSync(resolvedLetterheadPath);
+        //     const ext = path.extname(resolvedLetterheadPath).toLowerCase().replace('.', '') || 'jpeg';
+        //     letterheadBase64 = `data:image/${ext};base64,${imgBuf.toString('base64')}`;
+        // } catch (e) {
+        //     // If letterhead file is missing, continue without background
+        //     letterheadBase64 = '';
+        // }
 
-        const pdfHtml = `
-            <!DOCTYPE html>
-            <html>
-                <head>
-                    <meta charset='utf-8'>
-                    <style>
-                        body{font-family:Arial,sans-serif}
-                         .sheet{position:relative;width:794px;height:1123px;background:#fff;}
-                         .bg{position:absolute;inset:0;${letterheadBase64 ? `background:url('${letterheadBase64}') no-repeat center/cover;opacity:0.25;` : ''}}
-                        .content{position:absolute;left:60px;right:60px;top:160px;color:#111827}
-                        .row{margin:8px 0}
-                        table{border-collapse:collapse;width:100%;margin-top:12px}
-                        td,th{border:1px solid #e5e7eb;padding:6px;text-align:left}
-                    </style>
-                </head>
-                <body>
-                    <div class='sheet'>
-                        <div class='bg'></div>
-                        <div class='content'>
-                        <h2>Event Registration Acknowledgement</h2>
-                        <div class='row'><strong>Registration ID:</strong> ${registrationId || '-'}</div>
-                        <div class='row'><strong>Name:</strong> ${fullName}</div>
-                        <div class='row'><strong>Email:</strong> ${email}</div>
-                        <div class='row'><strong>Mobile:</strong> ${mobile}</div>
-                        <div class='row'><strong>Aadhar:</strong> ${aadharNumber || '-'}</div>
-                        <div class='row'><strong>Address:</strong> ${address}</div>
-                        <div class='row'><strong>Date:</strong> ${new Date().toLocaleDateString()}</div>
-                        <h3 style='margin-top:16px'>Children</h3>
-                        <table>
-                            <thead><tr><th>#</th><th>Name</th><th>Father</th><th>Mother</th><th>Std</th></tr></thead>
-                            <tbody>${childrenRows}</tbody>
-                        </table>
-                        <div style='margin-top:28px;text-align:right'>
-                            <em>Authorised Signatory</em>
-                        </div>
-                        </div>
-                    </div>
-                </body>
-            </html>`;
+        // const pdfHtml = '';
         
         // Render the HTML to PDF buffer using Puppeteer (disabled for now)
         // try {

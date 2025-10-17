@@ -16,20 +16,19 @@ import {
 
 import ChildForm from '../../components/ChildForm/ChildForm';
 import { TextInput, MobileInput, TextArea } from '../../components/FormComponents';
-import { validationRules } from '../../Utils/validationRules';
 import {
   formatFormDataForSubmission,
   generateRegistrationId,
   validateFormData,
   createDefaultChildData
 } from '../../Utils/formUtils';
-import BackgroundIcons from '../../components/BackgroundIcons/BackgroundIcons';
 
 interface ChildData {
   childName: string;
   fatherName: string;
   motherName: string;
   childAadhar: string;
+  childDateOfBirth: string;
   educationStandard: string;
 }
 
@@ -40,6 +39,7 @@ interface FormData {
   email: string;
   address: string;
   aadharNumber: string;
+  dateOfBirth: string;
   children: ChildData[];
 }
 
@@ -59,6 +59,7 @@ const AdmissionRegistration: React.FC = () => {
       email: '',
       address: '',
       aadharNumber: '',
+      dateOfBirth: '',
       children: [],
     },
   });
@@ -131,12 +132,12 @@ const AdmissionRegistration: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-teal-100 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
       {/* <BackgroundIcons /> */}
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-teal-700 to-emerald-700 rounded-full mb-6 shadow-lg">
             <GraduationCap className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -150,21 +151,19 @@ const AdmissionRegistration: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Personal Information Section */}
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-green-600 to-emerald-700 px-8 py-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
+          <div className="bg-gradient-to-r from-teal-700 to-emerald-700 px-8 py-6">
+                <div className="text-2xl text-white flex items-center gap-3 p-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <User className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h2>Personal Information</h2>
+                    <p className="text-sm mt-2">Tell us about yourself</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-white flex items-center gap-3 p-4">
-                    Personal Information
-                  </h2>
-                  <p className="text-green-100 mt-2">Tell us about yourself</p>
-                </div>
-              </div>
             </div>
 
-            <div className="p-12">
+            <div className="p-6 sm:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Full Name */}
                 <TextInput
@@ -174,7 +173,7 @@ const AdmissionRegistration: React.FC = () => {
                   placeholder="Enter your full name"
                   required={true}
                   error={errors.fullName}
-                  icon={<User className="w-4 h-4 text-green-600" />}
+                  icon={<User className="w-4 h-4 text-teal-700" />}
                 />
 
                 {/* Mobile Number */}
@@ -195,7 +194,7 @@ const AdmissionRegistration: React.FC = () => {
                   type="email"
                   required={true}
                   error={errors.email}
-                  icon={<Mail className="w-4 h-4 text-green-600" />}
+                  icon={<Mail className="w-4 h-4 text-teal-700" />}
                 />
 
                 {/* Aadhar Number */}
@@ -207,7 +206,7 @@ const AdmissionRegistration: React.FC = () => {
                   type="text"
                   required={true}
                   error={errors.aadharNumber}
-                  icon={<CreditCard className="w-4 h-4 text-green-600" />}
+                  icon={<CreditCard className="w-4 h-4 text-teal-700" />}
                 />
               </div>
 
@@ -221,36 +220,22 @@ const AdmissionRegistration: React.FC = () => {
                   required={true}
                   error={errors.address}
                   rows={4}
-                  icon={<MapPin className="w-4 h-4 text-green-600" />}
+                  icon={<MapPin className="w-4 h-4 text-teal-700" />}
                 />
               </div>
             </div>
           </div>
 
           {/* Children Information Section */}
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 px-8 py-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <Users className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-white flex items-center gap-3 p-4">
-                    Children Information
-                  </h2>
-                  <p className="text-emerald-100 mt-2">Add details for each child</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-12">
+          <div>
+            {/* <div className="p-12"> */}
               {fields.length === 0 ? (
                 /* No Children - Show Add Child Button */
                 <div className="text-center">
                   <button
                     type="button"
                     onClick={addChild}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md mx-auto"
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md mx-auto"
                   >
                     <Plus className="w-5 h-5" />
                     Add Child
@@ -274,7 +259,7 @@ const AdmissionRegistration: React.FC = () => {
                     <button
                       type="button"
                       onClick={addChild}
-                      className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
+                      className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
                     >
                       <Plus className="w-5 h-5" />
                       Add Another Child
@@ -282,7 +267,7 @@ const AdmissionRegistration: React.FC = () => {
                   </div>
                 </div>
               )}
-            </div>
+            {/* </div> */}
           </div>
 
           {/* Submit Button */}
@@ -290,7 +275,7 @@ const AdmissionRegistration: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-12 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 text-white px-12 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {isSubmitting ? (
                 <>

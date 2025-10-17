@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 
 interface IconData {
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
   x: number;
   y: number;
   size: number;
@@ -59,7 +59,7 @@ const BackgroundIcons: React.FC = () => {
       { x: 10, y: 10, width: 80, height: 90 }, // Main form area (approximate)
     ];
 
-    const isPositionValid = (x: number, y: number, size: number): boolean => {
+    const isPositionValid = (x: number, y: number): boolean => {
       // Check collision with existing icons
       for (const existingIcon of randomIcons) {
         const distance = Math.sqrt(
@@ -97,7 +97,7 @@ const BackgroundIcons: React.FC = () => {
         randomY = Math.random() * 100;
         const randomSize = Math.random() * 20 + 8; // 8-28px
         
-        if (isPositionValid(randomX, randomY, randomSize)) {
+        if (isPositionValid(randomX, randomY)) {
           validPosition = true;
         }
         attempts++;

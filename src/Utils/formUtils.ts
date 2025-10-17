@@ -7,6 +7,7 @@ export interface FormData {
   email: string;
   address: string;
   aadharNumber: string;
+  dateOfBirth: string;
   children: ChildData[];
 }
 
@@ -15,6 +16,7 @@ export interface ChildData {
   fatherName: string;
   motherName: string;
   childAadhar: string;
+  childDateOfBirth: string;
   educationStandard: string;
 }
 
@@ -65,6 +67,7 @@ export const validateFormData = (data: FormData): { isValid: boolean; errors: st
   if (!data.email) errors.push('Email is required');
   if (!data.address) errors.push('Address is required');
   if (!data.aadharNumber) errors.push('Aadhar number is required');
+  if (!data.dateOfBirth) errors.push('Date of birth is required');
 
   // Validate email format
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -90,7 +93,7 @@ export const validateFormData = (data: FormData): { isValid: boolean; errors: st
     if (!child.motherName) errors.push(`Child ${index + 1}: Mother's name is required`);
     if (!child.childAadhar) errors.push(`Child ${index + 1}: Aadhar number is required`);
     if (!child.educationStandard) errors.push(`Child ${index + 1}: Education standard is required`);
-    
+    if (!child.childDateOfBirth) errors.push(`Child ${index + 1}: Date of birth is required`);
     if (child.childAadhar && !validateAadharNumber(child.childAadhar)) {
       errors.push(`Child ${index + 1}: Invalid Aadhar number format`);
     }
@@ -108,6 +111,7 @@ export const createDefaultChildData = (): ChildData => ({
   fatherName: '',
   motherName: '',
   childAadhar: '',
+  childDateOfBirth: '',
   educationStandard: '',
 });
 
@@ -135,6 +139,7 @@ export const getFormCompletionPercentage = (data: FormData): number => {
   if (data.email) completedFields++;
   if (data.address) completedFields++;
   if (data.aadharNumber) completedFields++;
+  if (data.dateOfBirth) completedFields++;
 
   // Check children fields
   data.children.forEach((child) => {
@@ -143,6 +148,7 @@ export const getFormCompletionPercentage = (data: FormData): number => {
     if (child.motherName) completedFields++;
     if (child.childAadhar) completedFields++;
     if (child.educationStandard) completedFields++;
+    if (child.childDateOfBirth) completedFields++;
   });
 
   return Math.round((completedFields / totalFields) * 100);

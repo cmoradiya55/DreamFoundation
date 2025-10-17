@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
 import styles from './Hero.module.css';
 import PaddingWrapper from '../PaddingWrapper/PaddingWrapper';
 
@@ -45,16 +43,13 @@ const Hero = () => {
                                     className={`${styles.slide} ${index === currentImageIndex ? styles.activeSlide : ''}`}
                                 >
                                     <div className={styles.slideMedia}>
-                                        <PaddingWrapper>
                                         <Image
                                             src={slide.src}
                                             alt={`Slide ${index + 1}`}
                                             fill
-                                            sizes="100vw"
                                             priority={index === 0}
                                             className={styles.slideImage}
                                         />
-                                        </PaddingWrapper>
                                     </div>
                                 </div>
                             ))}
@@ -94,7 +89,7 @@ const Hero = () => {
                         <div className={styles.aboutContent}>
                             <h2 className={styles.sectionTitle}>Our Vision</h2>
                             <p className={styles.aboutText}>
-                                Today's students are going to face the challenges of life after 15–20 years. After 15–20 years our world is going to be very different with different values, different technology. We need to shape our kids for upcoming world and its challenges. Don’t limit a child to your own learning, for he was born in another time. According to Vedic traditions the purpose of human life is Dharma, Artha, Kama and Moksha.
+                                Today&apos;s students are going to face the challenges of life after 15–20 years. After 15–20 years our world is going to be very different with different values, different technology. We need to shape our kids for upcoming world and its challenges. Don&apos;t limit a child to your own learning, for he was born in another time. According to Vedic traditions the purpose of human life is Dharma, Artha, Kama and Moksha.
                             </p>
                         </div>
 
@@ -117,7 +112,7 @@ const Hero = () => {
                             Join thousands of students and professionals who have transformed their lives with Dream Foundation.
                         </p>
                         <div className={styles.ctaButtons}>
-                            <Link href="/registration" className={styles.primaryButton}>
+                            <Link href="/admissionRegistration" className={styles.primaryButton}>
                                 Apply for Admission
                             </Link>
                             <Link href="/eventRegistration" className={styles.secondaryButton}>
