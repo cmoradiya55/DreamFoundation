@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Control, Controller, FieldError } from 'react-hook-form';
+import { AlertCircle } from 'lucide-react';
 
 interface DateInputProps {
   name: string;
@@ -13,6 +14,7 @@ interface DateInputProps {
   className?: string;
   min?: string;
   max?: string;
+  icon?: React.ReactNode;
 }
 
 const DateInput: React.FC<DateInputProps> = ({
@@ -24,11 +26,14 @@ const DateInput: React.FC<DateInputProps> = ({
   className = '',
   min,
   max,
+  icon,
 }) => {
   return (
-    <div className={`w-full ${className}`}>
-      <label htmlFor={name} className={`form-label ${required ? 'required' : ''}`}>
+    <div className={`space-y-2 ${className}`}>
+      <label htmlFor={name} className="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+        {icon}
         {label}
+        {required && <span className="text-red-500">*</span>}
       </label>
       <Controller
         name={name}
@@ -36,19 +41,22 @@ const DateInput: React.FC<DateInputProps> = ({
         render={({ field }) => (
           <input
             {...field}
-            value={field.value as string || ''}
+            value={(field.value as string) || ''}
             id={name}
             type="date"
             min={min}
             max={max}
-            className={`form-input w-full px-4 py-3 rounded-lg text-gray-900 ${
-              error ? 'error' : ''
-            } ${className}`}
+            className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-teal-100 placeholder:text-gray-500 text-gray-900 ${
+              error 
+                ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-100' 
+                : 'border-teal-200 bg-teal-50 focus:border-teal-500 focus:bg-white'
+            }`}
           />
         )}
       />
       {error && (
-        <p className="error-message" role="alert">
+        <p className="text-red-500 text-sm flex items-center gap-2 mt-1" role="alert">
+          <AlertCircle className="w-4 h-4" />
           {error.message}
         </p>
       )}

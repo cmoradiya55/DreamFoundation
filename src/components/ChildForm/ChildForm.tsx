@@ -9,7 +9,7 @@ import {
   CreditCard,
   GraduationCap
 } from 'lucide-react';
-import { TextInput, SelectInput } from '../FormComponents';
+import { TextInput, SelectInput, DateInput } from '../FormComponents';
 
 interface FormData {
   fullName: string;
@@ -18,11 +18,13 @@ interface FormData {
   email: string;
   address: string;
   aadharNumber: string;
+  dateOfBirth: string;
   children: {
     childName: string;
     fatherName: string;
     motherName: string;
     childAadhar: string;
+    childDateOfBirth: string;
     educationStandard: string;
   }[];
 }
@@ -119,6 +121,16 @@ const ChildForm: React.FC<ChildFormProps> = ({ index, control, errors, onRemove 
           required={true}
           error={errors.children?.[index]?.childAadhar}
           icon={<CreditCard className="w-4 h-4 text-green-600" />}
+        />
+
+         {/* Child Date of Birth */}
+         <DateInput
+          name={`children.${index}.dateOfBirth`}
+          control={control}
+          label="Child Date of Birth"
+          required={true}
+          error={errors.children?.[index]?.childDateOfBirth as any}
+          max={new Date().toISOString().split('T')[0]}
         />
 
         {/* Education Standard */}

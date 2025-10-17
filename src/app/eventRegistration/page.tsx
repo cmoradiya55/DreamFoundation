@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 import ChildForm from '../../components/ChildForm/ChildForm';
-import { TextInput, MobileInput, TextArea } from '../../components/FormComponents';
+import { TextInput, MobileInput, TextArea, DateInput } from '../../components/FormComponents';
 import {
   formatFormDataForSubmission,
   generateRegistrationId,
@@ -28,11 +28,13 @@ interface ChildData {
   fatherName: string;
   motherName: string;
   childAadhar: string;
+  childDateOfBirth: string;
   educationStandard: string;
 }
 
 interface FormData {
   fullName: string;
+  dateOfBirth: string;
   mobile: string;
   mobileCountryCode: string;
   email: string;
@@ -52,6 +54,7 @@ const EventRegistration: React.FC = () => {
   } = useForm<FormData>({
     defaultValues: {
       fullName: '',
+      dateOfBirth: '',
       mobile: '',
       mobileCountryCode: '+91',
       email: '',
@@ -91,6 +94,7 @@ const EventRegistration: React.FC = () => {
           registrationId,
           // top-level fields for convenience
           fullName: data.fullName,
+          dateOfBirth: data.dateOfBirth,
           email: data.email,
           mobile: `${data.mobileCountryCode || '+91'} ${data.mobile}`,
           address: data.address,
@@ -124,12 +128,12 @@ const EventRegistration: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-teal-100 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
       <BackgroundIcons />
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-teal-700 to-emerald-700 rounded-full mb-6 shadow-lg">
             <Calendar className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -143,17 +147,19 @@ const EventRegistration: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Personal Information Section */}
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3 p-4">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
+            <div className="bg-gradient-to-r from-teal-700 to-emerald-700 px-8 py-6">
+                <div className="text-2xl text-white flex items-center gap-3 p-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <User className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h2>Personal Information</h2>
+                    <p className="text-sm mt-2">Tell us about yourself</p>
+                  </div>
                 </div>
-                Personal Information
-              </h2>
-              <p className="text-teal-100 mt-2">Tell us about yourself</p>
             </div>
 
-            <div className="p-12">
+            <div className="p-6 sm:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Full Name */}
                 <TextInput
@@ -163,7 +169,7 @@ const EventRegistration: React.FC = () => {
                   placeholder="Enter your full name"
                   required={true}
                   error={errors.fullName}
-                  icon={<User className="w-4 h-4 text-teal-600" />}
+                  icon={<User className="w-4 h-4 text-teal-700" />}
                 />
 
                 {/* Mobile Number */}
@@ -184,7 +190,18 @@ const EventRegistration: React.FC = () => {
                   type="email"
                   required={true}
                   error={errors.email}
-                  icon={<Mail className="w-4 h-4 text-teal-600" />}
+                  icon={<Mail className="w-4 h-4 text-teal-700" />}
+                />
+
+                {/* Date of Birth */}
+                <DateInput
+                  name="dateOfBirth"
+                  control={control}
+                  label="Date of Birth"
+                  required={true}
+                  error={errors.dateOfBirth as any}
+                  className=""
+                  max={new Date().toISOString().split('T')[0]}
                 />
 
                 {/* Aadhar Number */}
@@ -196,7 +213,7 @@ const EventRegistration: React.FC = () => {
                   type="text"
                   required={true}
                   error={errors.aadharNumber}
-                  icon={<CreditCard className="w-4 h-4 text-teal-600" />}
+                  icon={<CreditCard className="w-4 h-4 text-teal-700" />}
                 />
               </div>
 
@@ -210,7 +227,7 @@ const EventRegistration: React.FC = () => {
                   required={true}
                   error={errors.address}
                   rows={4}
-                  icon={<MapPin className="w-4 h-4 text-teal-600" />}
+                  icon={<MapPin className="w-4 h-4 text-teal-700" />}
                 />
               </div>
             </div>
@@ -249,7 +266,7 @@ const EventRegistration: React.FC = () => {
                   <button
                     type="button"
                     onClick={addChild}
-                    className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
                   >
                     <Plus className="w-5 h-5" />
                     Add Another Child
