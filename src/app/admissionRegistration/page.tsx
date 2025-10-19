@@ -1,21 +1,20 @@
 'use client';
 
 import React from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, FieldError } from 'react-hook-form';
 import {
   User,
   Mail,
   MapPin,
   CreditCard,
   Plus,
-  Users,
   GraduationCap,
   ArrowRight,
   Loader2
 } from 'lucide-react';
 
 import ChildForm from '../../components/ChildForm/ChildForm';
-import { TextInput, MobileInput, TextArea } from '../../components/FormComponents';
+import { TextInput, MobileInput, TextArea, DateInput } from '../../components/FormComponents';
 import {
   formatFormDataForSubmission,
   generateRegistrationId,
@@ -49,8 +48,6 @@ const AdmissionRegistration: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    register,
-    watch,
   } = useForm<FormData>({
     defaultValues: {
       fullName: '',
@@ -98,6 +95,7 @@ const AdmissionRegistration: React.FC = () => {
           email: data.email,
           mobile: `${data.mobileCountryCode || '+91'} ${data.mobile}`,
           address: data.address,
+          dateOfBirth: data.dateOfBirth,
           aadharNumber: data.aadharNumber,
           children: data.children || [],
           
@@ -114,7 +112,7 @@ const AdmissionRegistration: React.FC = () => {
 
 
       alert(`Admission registration submitted successfully!\nRegistration ID: ${registrationId}`);
-      // reset();
+      reset();
     } catch (error) {
       console.error('Error submitting admission registration:', error);
       alert('An error occurred while submitting the form. Please try again.');
@@ -195,6 +193,17 @@ const AdmissionRegistration: React.FC = () => {
                   required={true}
                   error={errors.email}
                   icon={<Mail className="w-4 h-4 text-teal-700" />}
+                />
+
+                 {/* Date of Birth */}
+                <DateInput
+                  name="dateOfBirth"
+                  control={control}
+                  label="Date of Birth"
+                  required={true}
+                  error={errors.dateOfBirth as FieldError}
+                  className=""
+                  max={new Date().toISOString().split('T')[0]}
                 />
 
                 {/* Aadhar Number */}

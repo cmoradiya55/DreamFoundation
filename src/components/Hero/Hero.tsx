@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Hero.module.css';
-import PaddingWrapper from '../PaddingWrapper/PaddingWrapper';
 
 const Hero = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -13,10 +12,12 @@ const Hero = () => {
     const slideImages = [
         { src: '/images/canva_2.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
         { src: '/images/canva_1.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
-        // { src: '/images/canva_3.webp', fallback: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
         { src: '/images/canva_4.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
         { src: '/images/canva_5.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
-        { src: '/images/canva_6.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }
+        { src: '/images/canva_6.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+        { src: '/images/Helix/z1.jpg', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+        { src: '/images/Helix/z2.jpg', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+        { src: '/images/Helix/z5.jpg', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
     ];
 
     // Auto slide functionality with setTimeout
@@ -25,7 +26,7 @@ const Hero = () => {
             setCurrentImageIndex((prevIndex) =>
                 prevIndex === slideImages.length - 1 ? 0 : prevIndex + 1
             );
-        }, 10000);
+        }, 4000);
 
         return () => clearTimeout(slideInterval);
     }, [currentImageIndex, slideImages.length]);
