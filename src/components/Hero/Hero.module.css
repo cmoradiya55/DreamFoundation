@@ -1,7 +1,7 @@
 /* Homepage Styles */
 
 .main {
-  min-height: 100vh;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
   background: #f0fdfa;
@@ -16,8 +16,7 @@
 /* Hero Section with Image Slider */
 .heroSection { 
   position: relative;
-  height: 85vh;
-  min-height: 650px;
+  height: 95vh;
   margin-bottom: 3rem;
 }
 

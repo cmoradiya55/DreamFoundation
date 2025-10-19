@@ -95,7 +95,7 @@ const BackgroundIcons: React.FC = () => {
       while (!validPosition && attempts < maxAttempts) {
         randomX = Math.random() * 100;
         randomY = Math.random() * 100;
-        const randomSize = Math.random() * 20 + 8; // 8-28px
+        // const randomSize = Math.random() * 20 + 8; // 8-28px
         
         if (isPositionValid(randomX, randomY)) {
           validPosition = true;

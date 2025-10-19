@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 60px;
 }
 
 .logo {
@@ -30,7 +30,7 @@
 }
 
 .logoImage {
-  height: 120px;
+  height: 90px;
   width: auto;
   margin-right: 10px;
 }

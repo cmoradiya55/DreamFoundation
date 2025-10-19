@@ -1,14 +1,13 @@
 'use client';
 
 import React from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, FieldError } from 'react-hook-form';
 import {
   User,
   Mail,
   MapPin,
   CreditCard,
   Plus,
-  Users,
   GraduationCap,
   ArrowRight,
   Loader2
@@ -49,8 +48,6 @@ const AdmissionRegistration: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    register,
-    watch,
   } = useForm<FormData>({
     defaultValues: {
       fullName: '',
@@ -204,7 +201,7 @@ const AdmissionRegistration: React.FC = () => {
                   control={control}
                   label="Date of Birth"
                   required={true}
-                  error={errors.dateOfBirth as any}
+                  error={errors.dateOfBirth as FieldError}
                   className=""
                   max={new Date().toISOString().split('T')[0]}
                 />

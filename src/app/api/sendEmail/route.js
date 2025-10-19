@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
+// import GoogleSheetsService from "../../../utils/googleSheetsService"; // Temporarily disabled
 
 // Ensure this route runs on the Node.js runtime (required for nodemailer)
 export const runtime = 'nodejs';
@@ -10,6 +11,7 @@ export async function POST(req) {
     try {
         body = await req.json();
     } catch (err) {
+        console.log("err", err)
         return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
     console.log("body", body);
@@ -151,8 +153,7 @@ export async function POST(req) {
             address,
             aadharNumber,
             children = [],
-            formattedData,
-            letterheadPath = '/images/letterPed.jpeg'
+            eventDetail = {}
         } = body;
 
         if (!fullName || !email || !mobile) {
@@ -168,6 +169,12 @@ export async function POST(req) {
 
         emailContent = `
             📅 New Event Registration - Dream Foundation
+
+            EVENT DETAILS:
+            • Event Name: ${eventDetail.eventName || 'Dream Foundation Event'}
+            • Event Date: ${eventDetail.eventDate || 'TBD'}
+            • Event Time: ${eventDetail.eventTime || 'TBD'}
+            • Event Location: ${eventDetail.eventLocation || 'TBD'}
 
             REGISTRATION INFO
             • Registration ID: ${registrationId || '-'}
@@ -222,7 +229,14 @@ export async function POST(req) {
                     <h3>${foundationInfo.tagline}</h3>
                     </div>
                     <div class="section">
-                    <h3>Event Registration Info</h3>
+                    <h3>Event Details</h3>
+                    <p><strong>Event Name:</strong> ${eventDetail.eventName || 'Dream Foundation Event'}</p>
+                    <p><strong>Event Date:</strong> ${eventDetail.eventDate || 'TBD'}</p>
+                    <p><strong>Event Time:</strong> ${eventDetail.eventTime || 'TBD'}</p>
+                    <p><strong>Event Location:</strong> ${eventDetail.eventLocation || 'TBD'}</p>
+                    </div>
+                    <div class="section">
+                    <h3>Registration Info</h3>
                     <p><strong>Registration ID:</strong> ${registrationId || '-'}</p>
                     <p><strong>Name:</strong> ${fullName}</p>
                     <p><strong>Email:</strong> ${email}</p>
@@ -325,7 +339,19 @@ export async function POST(req) {
         // Send email to admin
         await transporter.sendMail(mailOptions);
 
-        // Store registration data in admin system
+        // Store registration data in Google Sheets (temporarily disabled)
+        // if (body.formType === 'admissionRegistration' || body.formType === 'eventRegistration') {
+        //     try {
+        //         const sheetsService = new GoogleSheetsService();
+        //         await sheetsService.appendRegistrationData(body);
+        //         console.log('Data successfully saved to Google Sheets');
+        //     } catch (sheetsError) {
+        //         console.error('Error saving to Google Sheets:', sheetsError);
+        //         // Don't fail the entire request if Google Sheets fails
+        //     }
+        // }
+
+        // Store registration data in admin system (existing functionality)
         if (body.formType === 'admissionRegistration' || body.formType === 'eventRegistration') {
             try {
                 await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/admin/registrations`, {

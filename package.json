@@ -6,10 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup-sheets": "node scripts/setupGoogleSheets.js",
+    "test-sheets": "node scripts/testGoogleSheets.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "googleapis": "^164.0.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.545.0",
     "next": "15.5.4",
@@ -18,8 +21,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.65.0",
-    "react-icons": "^5.5.0",
-    "xlsx": "^0.18.5"
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

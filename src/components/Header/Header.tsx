@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Header.module.css';
 import { FaBars, FaTimes } from "react-icons/fa"; 
 
 const navLinks = [
+    { id: 1, title: 'EVENT REGISTRATION', path: "/eventRegistration" },
     { id: 2, title: 'ADMISSION REGISTRATION', path: "/admissionRegistration" },
-    { id: 3, title: 'EVENT REGISTRATION', path: "/eventRegistration" },
 ];
 
 export default function Header() {
@@ -67,9 +68,11 @@ export default function Header() {
             <div className={styles.container}>
                 <div className={styles.logo}>
                     <Link href="/" className={styles.logoLink}>
-                        <img
+                        <Image
                             src="/images/dreamFoundationLogo.png"
                             alt="Dream Foundation Logo"
+                            width={200}
+                            height={60}
                             className={styles.logoImage}
                             onError={(e) => {
                                 // Fallback if logo image doesn't exist

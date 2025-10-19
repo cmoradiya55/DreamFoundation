@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 import { MdEmail, MdLocationOn, MdPhone } from 'react-icons/md';
 import { FaInstagram } from 'react-icons/fa';
@@ -17,9 +18,11 @@ export default function Footer() {
                 <div className={styles.footerContent}>
                     <div className={styles.logoSection}>
                         <Link href="/" className={styles.logoLink}>
-                            <img
+                            <Image
                                 src="/images/dreamFoundationLogo.png"
                                 alt="Dream Foundation Logo"
+                                width={200}
+                                height={60}
                                 className={styles.logoImage}
                                 onError={(e) => {
                                     // Fallback if logo image doesn't exist

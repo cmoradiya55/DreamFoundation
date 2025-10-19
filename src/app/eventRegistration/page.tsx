@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, FieldError } from 'react-hook-form';
 import {
   User,
   Mail,
@@ -22,6 +22,7 @@ import {
   createDefaultChildData
 } from '../../Utils/formUtils';
 import BackgroundIcons from '../../components/BackgroundIcons/BackgroundIcons';
+import EventImageGallery from '../../components/EventImageGallery/EventImageGallery';
 
 interface ChildData {
   childName: string;
@@ -48,9 +49,9 @@ const EventRegistration: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
-    register,
-    watch,
+    // reset,
+    // register,
+    // watch,
   } = useForm<FormData>({
     defaultValues: {
       fullName: '',
@@ -107,8 +108,8 @@ const EventRegistration: React.FC = () => {
           address: data.address,
           aadharNumber: data.aadharNumber,
           children: data.children || [],
-          // also include the whole formatted structure if API needs it
           formattedData,
+          eventDetail,
         }),
       });
 
@@ -137,7 +138,7 @@ const EventRegistration: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-teal-100 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
-      <BackgroundIcons />
+      {/* <BackgroundIcons /> */}
       <div className="max-w-5xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -150,6 +151,11 @@ const EventRegistration: React.FC = () => {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Join us for an amazing event! Please fill out the form below to complete your registration.
           </p>
+        </div>
+
+        {/* Event Image Gallery */}
+        <div className="mb-12">
+          <EventImageGallery />
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -207,7 +213,7 @@ const EventRegistration: React.FC = () => {
                   control={control}
                   label="Date of Birth"
                   required={true}
-                  error={errors.dateOfBirth as any}
+                  error={errors.dateOfBirth as FieldError}
                   className=""
                   max={new Date().toISOString().split('T')[0]}
                 />
@@ -274,7 +280,7 @@ const EventRegistration: React.FC = () => {
                   <button
                     type="button"
                     onClick={addChild}
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all duration-200 hover:scale-105 shadow-md"
                   >
                     <Plus className="w-5 h-5" />
                     Add Another Child
