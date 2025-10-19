@@ -139,7 +139,7 @@ const EventRegistration: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-teal-100 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 relative">
       {/* <BackgroundIcons /> */}
-      <div className="max-w-5xl w-full relative z-10">
+      <div className="max-w-6xl w-full relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-teal-700 to-emerald-700 rounded-full mb-6 shadow-lg">
