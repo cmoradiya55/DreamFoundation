@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
-// import GoogleSheetsService from "../../../utils/googleSheetsService"; // Temporarily disabled
 
 // Ensure this route runs on the Node.js runtime (required for nodemailer)
 export const runtime = 'nodejs';
@@ -14,12 +13,9 @@ export async function POST(req) {
         console.log("err", err)
         return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
-    console.log("body", body);
     
     let emailContent;
     let htmlEmailContent;
-    // holds generated PDF buffer when formType === 'eventRegistration' (disabled for now)
-    // let pdfBuffer;
 
     // Dream Foundation details
     const foundationInfo = {
@@ -270,35 +266,6 @@ export async function POST(req) {
                 </body>
             </html>
         `;
-       
-        // Build a letterhead-like HTML that we will render to PDF using Puppeteer (disabled for now)
-        // const resolvedLetterheadPath = path.join(process.cwd(), 'public', letterheadPath.replace(/^\//, ''));
-        // let letterheadBase64 = '';
-        // try {
-        //     const imgBuf = fs.readFileSync(resolvedLetterheadPath);
-        //     const ext = path.extname(resolvedLetterheadPath).toLowerCase().replace('.', '') || 'jpeg';
-        //     letterheadBase64 = `data:image/${ext};base64,${imgBuf.toString('base64')}`;
-        // } catch (e) {
-        //     // If letterhead file is missing, continue without background
-        //     letterheadBase64 = '';
-        // }
-
-        // const pdfHtml = '';
-        
-        // Render the HTML to PDF buffer using Puppeteer (disabled for now)
-        // try {
-        //     const browser = await puppeteer.launch({
-        //         args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        //         headless: true
-        //     });
-        //     const page = await browser.newPage();
-        //     await page.setContent(pdfHtml, { waitUntil: 'networkidle0' });
-        //     pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
-        //     await browser.close();
-        // } catch (err) {
-        //     console.error('PDF generation failed:', err);
-        // }
-
     } 
 
     try {
@@ -330,26 +297,11 @@ export async function POST(req) {
                      `Sample Request from ${body.businessName} - Dream Foundation`,
             text: emailContent,
             html: htmlEmailContent,
-            // attachments disabled for now
-            // attachments: body.formType === 'eventRegistration' && pdfBuffer ? [
-            //     { filename: `EventRegistration_${Date.now()}.pdf`, content: pdfBuffer }
-            // ] : undefined,
         };
 
         // Send email to admin
         await transporter.sendMail(mailOptions);
 
-        // Store registration data in Google Sheets (temporarily disabled)
-        // if (body.formType === 'admissionRegistration' || body.formType === 'eventRegistration') {
-        //     try {
-        //         const sheetsService = new GoogleSheetsService();
-        //         await sheetsService.appendRegistrationData(body);
-        //         console.log('Data successfully saved to Google Sheets');
-        //     } catch (sheetsError) {
-        //         console.error('Error saving to Google Sheets:', sheetsError);
-        //         // Don't fail the entire request if Google Sheets fails
-        //     }
-        // }
 
         // Store registration data in admin system (existing functionality)
         if (body.formType === 'admissionRegistration' || body.formType === 'eventRegistration') {
@@ -387,10 +339,6 @@ export async function POST(req) {
                      
                     </html>
                 `,
-                // attachments disabled for now
-                // attachments: body.formType === 'eventRegistration' && pdfBuffer ? [
-                //     { filename: `EventRegistration_${Date.now()}.pdf`, content: pdfBuffer }
-                // ] : undefined
             };
 
             await transporter.sendMail(confirmationEmail);

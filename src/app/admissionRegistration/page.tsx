@@ -80,11 +80,30 @@ const AdmissionRegistration: React.FC = () => {
       const formattedData = formatFormDataForSubmission(data);
       const registrationId = generateRegistrationId();
 
-      console.log('Admission Registration ID:', registrationId);
-      console.log('Formatted Form Data:', formattedData);
-     
+      // Save to database first
+      const dbResponse = await fetch('/api/admissionRegistration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: data.fullName,
+          dateOfBirth: data.dateOfBirth,
+          mobile: data.mobile,
+          mobileCountryCode: data.mobileCountryCode,
+          email: data.email,
+          address: data.address,
+          aadharNumber: data.aadharNumber,
+          registrationId,
+          children: data.children || [],
+        }),
+      });
+
+      if (!dbResponse.ok) {
+        const errorData = await dbResponse.json();
+        throw new Error(errorData.error || 'Failed to save registration data');
+      }
+
       // Send confirmation email via API
-      const response = await fetch('/api/sendEmail', {
+      const emailResponse = await fetch('/api/sendEmail', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -104,12 +123,11 @@ const AdmissionRegistration: React.FC = () => {
         }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => '');
-        throw new Error(errorText || 'Failed to send email');
+      if (!emailResponse.ok) {
+        const errorText = await emailResponse.text().catch(() => '');
+        console.warn('Email sending failed, but data was saved:', errorText);
+        // Don't throw error here as data is already saved
       }
-
-
 
       alert(`Admission registration submitted successfully!\nRegistration ID: ${registrationId}`);
       reset();
