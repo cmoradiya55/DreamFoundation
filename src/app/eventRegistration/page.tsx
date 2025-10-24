@@ -21,7 +21,6 @@ import {
   validateFormData,
   createDefaultChildData
 } from '../../Utils/formUtils';
-import BackgroundIcons from '../../components/BackgroundIcons/BackgroundIcons';
 import EventImageGallery from '../../components/EventImageGallery/EventImageGallery';
 
 interface ChildData {
@@ -49,7 +48,7 @@ const EventRegistration: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    // reset,
+    reset,
     // register,
     // watch,
   } = useForm<FormData>({
@@ -90,11 +89,30 @@ const EventRegistration: React.FC = () => {
       const formattedData = formatFormDataForSubmission(data);
       const registrationId = generateRegistrationId();
 
-      console.log('Registration ID:', registrationId);
-      console.log('Formatted Form Data:', formattedData);
+      // Save to database first
+      const dbResponse = await fetch('/api/eventRegistration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: data.fullName,
+          dateOfBirth: data.dateOfBirth,
+          mobile: data.mobile,
+          mobileCountryCode: data.mobileCountryCode,
+          email: data.email,
+          address: data.address,
+          aadharNumber: data.aadharNumber,
+          registrationId,
+          children: data.children || [],
+        }),
+      });
+
+      if (!dbResponse.ok) {
+        const errorData = await dbResponse.json();
+        throw new Error(errorData.error || 'Failed to save registration data');
+      }
 
       // Send confirmation email via API
-      const response = await fetch('/api/sendEmail', {
+      const emailResponse = await fetch('/api/sendEmail', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -113,13 +131,14 @@ const EventRegistration: React.FC = () => {
         }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => '');
-        throw new Error(errorText || 'Failed to send email');
+      if (!emailResponse.ok) {
+        const errorText = await emailResponse.text().catch(() => '');
+        console.warn('Email sending failed, but data was saved:', errorText);
+        // Don't throw error here as data is already saved
       }
 
       alert(`Registration submitted successfully!\nRegistration ID: ${registrationId}`);
-      // reset();
+      reset();
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Error submitting form. Please try again.');
