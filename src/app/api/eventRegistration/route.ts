@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, EventUser, EventChild } from '../../../lib/supabase';
+import { supabase } from '../../../lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {

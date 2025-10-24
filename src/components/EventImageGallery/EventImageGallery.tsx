@@ -7,7 +7,7 @@ interface EventImageGalleryProps {
   className?: string;
 }
 
-const EventImageGallery: React.FC<EventImageGalleryProps> = ({ className = '' }) => {
+const EventImageGallery: React.FC<EventImageGalleryProps> = () => {
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
