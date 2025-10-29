@@ -160,17 +160,19 @@
     width: 100vw; 
     background-color: #042f2e;
     box-shadow: 0 8px 16px rgba(4, 47, 46, 0.35);
-        opacity: 0;
+    opacity: 0;
     z-index: 1000;
-    display: flex;
+    display: none; /* hidden by default so it cannot be clicked */
     padding: 10px 0;
     flex-direction: column;
+    pointer-events: none; /* prevent clicks when closed */
   }
 
   .mobileDrawer.open {
     transform: translateY(0);
-        opacity: 1;
-    display: flex;
+    opacity: 1;
+    display: flex; /* enable when open */
+    pointer-events: auto; /* allow clicks when open */
   }
 
     .drawerHeader {
