@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Hero.module.css';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import TicketModal from '../TicketModal/TicketModal';
 
 const Hero = () => {
     
@@ -46,11 +47,12 @@ const Hero = () => {
     //     return () => clearTimeout(slideInterval);
     // }, [currentImageIndex, slideImages.length]);
 
-    const [activeGallery, setActiveGallery] = useState<'helix' | 'tinyYatra'>('helix');
+    const [activeGallery, setActiveGallery] = useState<number>(1);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-        const helixImages = [
+    const helixImages = [
         '/images/Helix/Helix_Academy_001.webp',
         '/images/Helix/Helix_Academy_002.webp',
         '/images/Helix/Helix_Academy_003.webp',
@@ -77,7 +79,11 @@ const Hero = () => {
         '/images/canva_6.webp',
     ];
 
-    const currentGalleryImages = activeGallery === 'helix' ? helixImages : tinyYatraImages;
+    const concertImage = [
+        '/images/concertImages/concert_img.png',
+    ]
+
+    const currentGalleryImages = activeGallery==1 ? concertImage : (activeGallery === 2 ? helixImages : tinyYatraImages);
 
     const openLightbox = (index: number) => {
         setLightboxIndex(index);
@@ -103,62 +109,78 @@ const Hero = () => {
             <main className={styles.main}>
 
                 {/* Hero Section with Image Slider */}
-                {/* <section className={styles.heroSection}>
-                        <div className={styles.imageSlider}>
-                            {slideImages.map((slide, index) => (
-                                <div
-                                    key={index}
-                                    className={`${styles.slide} ${index === currentImageIndex ? styles.activeSlide : ''}`}
-                                >
-                                    <div className={styles.slideMedia}>
-                                        <Image
-                                            src={slide.src}
-                                            alt={`helix_acadamy_image`}
-                                            fill
-                                            priority={index === 0}
-                                            className={styles.slideImage}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-
-
-                        </div>
-                    </section> */}
+                <TicketModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
 
                 <section className={styles.gallerySection}>
                     <div className={styles.container}>
                         <div className={styles.galleryTabs}>
                             <button
-                                className={`${styles.tabButton} ${activeGallery === 'helix' ? styles.activeTab : ''}`}
-                                onClick={() => setActiveGallery('helix')}
+                                className={`${styles.tabButton} ${activeGallery === 1 ? styles.activeTab : ''}`}
+                                onClick={() => setActiveGallery(1)}
+                            >
+                                Live Concert
+                            </button>
+                            <button
+                                className={`${styles.tabButton} ${activeGallery === 2 ? styles.activeTab : ''}`}
+                                onClick={() => setActiveGallery(2)}
                             >
                                 Helix Academy
                             </button>
                             <button
-                                className={`${styles.tabButton} ${activeGallery === 'tinyYatra' ? styles.activeTab : ''}`}
-                                onClick={() => setActiveGallery('tinyYatra')}
+                                className={`${styles.tabButton} ${activeGallery === 3 ? styles.activeTab : ''}`}
+                                onClick={() => setActiveGallery(3)}
                             >
                                 Tiny Yatra
                             </button>
                         </div>
 
-                        <div className={styles.galleryGrid}>
-                            {currentGalleryImages.map((image, index) => (
-                                <div
-                                    key={index}
-                                    className={`${styles.galleryItem} ${activeGallery === 'tinyYatra' ? styles.tinyYatraItem : ''}`}
-                                    onClick={() => openLightbox(index)}
-                                >
-                                    <Image
-                                        src={image}
-                                        alt={`${activeGallery === 'helix' ? 'Helix Academy' : 'Tiny Yatra'} image ${index + 1}`}
-                                        fill
-                                        className={styles.galleryImage}
-                                    />
+                        {activeGallery !== 1 &&
+                            <div className={styles.galleryGrid}>
+                                {currentGalleryImages.map((image, index) => (
+                                    <div
+                                        key={index}
+                                        className={`${styles.galleryItem} ${activeGallery === 3 ? styles.tinyYatraItem : ''}`}
+                                        onClick={() => openLightbox(index)}
+                                    >
+                                        <Image
+                                            src={image}
+                                            alt={`${activeGallery === 2 ? 'Helix Academy' : (activeGallery === 3 ? 'Tiny Yatra' : 'Live Concert')} image ${index + 1}`}
+                                            fill
+                                            className={styles.galleryImage}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        }
+                        { activeGallery === 1 && 
+                            <>
+                                <div className={`${styles.imageSlider} flex flex-col items-center`}>
+                                    {concertImage.map((slide, index) => (
+                                        <div
+                                            key={index}
+                                            className={`${styles.slide} ${styles.activeSlide }`}
+                                        >
+                                            <div className="mb-5 rounded-xl overflow-hidden flex justify-center items-center">
+                                                <Image
+                                                    src={slide}
+                                                    alt="Live Concert"
+                                                    width={400}
+                                                    height={200}
+                                                    className="w-[350px] h-auto object-cover rounded-xl"
+                                                    priority
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <button
+                                        className={`${styles.tabButton} ${styles.activeTab}`}
+                                        onClick={() => setIsModalOpen(true)}
+                                        >
+                                        Book Ticket
+                                    </button>
                                 </div>
-                            ))}
-                        </div>
+                            </>
+                        }
                     </div>
                 </section>
 
@@ -240,7 +262,7 @@ const Hero = () => {
                     <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
                         <Image
                             src={currentGalleryImages[lightboxIndex]}
-                            alt={`${activeGallery === 'helix' ? 'Helix Academy' : 'Tiny Yatra'} image ${lightboxIndex + 1}`}
+                            alt={`${activeGallery === 2 ? 'Helix Academy' : (activeGallery === 3 ? 'Tiny Yatra' : 'Live Concert')} image ${lightboxIndex + 1}`}
                             fill
                             className={styles.lightboxImage}
                         />

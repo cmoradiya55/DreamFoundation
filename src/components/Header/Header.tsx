@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
-import { FaBars, FaTimes } from "react-icons/fa"; 
+import { FaBars, FaTimes } from "react-icons/fa";
+import TicketModal from '../TicketModal/TicketModal'; 
 
 const navLinks = [
     { id: 1, title: 'EVENT REGISTRATION', path: "/eventRegistration" },
@@ -13,6 +14,20 @@ const navLinks = [
 
 export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        const modalShown = sessionStorage.getItem('ticketModalShown');
+        
+        if (!modalShown) {
+          const timer = setTimeout(() => {
+            setIsModalOpen(true);
+            sessionStorage.setItem('ticketModalShown', 'true');
+          }, 2000);
+    
+          return () => clearTimeout(timer);
+        }
+      }, []);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -65,6 +80,7 @@ export default function Header() {
 
     return (
         <header className={styles.header}>
+            <TicketModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             <div className={styles.container}>
                 <div className={styles.logo}>
                     <Link href="/" className={styles.logoLink}>
