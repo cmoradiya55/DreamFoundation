@@ -64,9 +64,9 @@ const TicketModal: React.FC<TicketModalProps> = ({ isModalOpen = false, setIsMod
           <div className="p-[30px] flex flex-col items-center md:p-5 sm:p-[15px]">
             <div className="mb-5 rounded-xl overflow-hidden bg-gray-100">
               <Image
-                src='/images/concertImages/concert_img.png'
+                src='/images/concertImages/concert_stage.png'
                 alt="Live Concert"
-                width={400}
+                width={600}
                 height={200}
                 className="w-full h-auto object-cover rounded-xl"
                 priority
@@ -101,7 +101,7 @@ const TicketModal: React.FC<TicketModalProps> = ({ isModalOpen = false, setIsMod
                   <li className="flex items-start gap-3">
                     <span className="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-600"></span>
                     <span>
-                      <span className="font-semibold">Online payment gateway</span> will be available soon.
+                      <span className="font-semibold">Online Booking</span> will be available soon.
                     </span>
                   </li>
                 </ul>
