@@ -52,7 +52,7 @@ export default function TermsAndConditions() {
             </ol>
           </section>
 
-          <section className="mt-8 pt-6 border-t border-gray-200">
+          {/* <section className="mt-8 pt-6 border-t border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Grievance Officer</h2>
             <ul className="space-y-2 text-sm">
               <li><strong>Name:</strong> [To be inserted by organization]</li>
@@ -62,7 +62,7 @@ export default function TermsAndConditions() {
               <li><strong>Phone:</strong> +91 63561 79699</li>
               <li><strong>Timings:</strong> Monday to Friday, 9:00 AM – 6:00 PM</li>
             </ul>
-          </section>
+          </section> */}
 
           <section className="mt-8 pt-6 border-t border-gray-200">
             <p className="text-sm text-gray-600">
