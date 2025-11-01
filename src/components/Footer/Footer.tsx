@@ -99,9 +99,25 @@ export default function Footer() {
                 </div>
 
                 <div className="border-t border-amber-200 mt-8 pt-6 text-center">
-                    &copy; {new Date().getFullYear()} Dream Foundation. All Rights Reserved (Terms of Use)
-                    <br />
-                    Developed and Managed by Infinius Tech
+                    <p className="mb-3">
+                        &copy; {new Date().getFullYear()} Dream Foundation. All Rights Reserved.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-4 text-sm">
+                        <Link href="/terms-and-conditions" className="text-teal-700 hover:text-teal-800 hover:underline transition-colors">
+                            Terms & Conditions
+                        </Link>
+                        <span className="text-gray-400">|</span>
+                        <Link href="/privacy-policy" className="text-teal-700 hover:text-teal-800 hover:underline transition-colors">
+                            Privacy Policy
+                        </Link>
+                        <span className="text-gray-400">|</span>
+                        <Link href="/refund-policy" className="text-teal-700 hover:text-teal-800 hover:underline transition-colors">
+                            Refund Policy
+                        </Link>
+                    </div>
+                    <p className="mt-3 text-sm text-gray-600">
+                        Developed and Managed by Infinius Tech
+                    </p>
                 </div>
             </div>
         </footer>
