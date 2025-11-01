@@ -10,7 +10,7 @@ import TicketModal from '../TicketModal/TicketModal';
 const Hero = () => {
     
     
-    // const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     // const slideImages = [
     //     { src: '/images/canva_2.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
@@ -37,15 +37,7 @@ const Hero = () => {
     // ];
 
     // Auto slide functionality with setTimeout
-    // useEffect(() => {
-    //     const slideInterval = setTimeout(() => {
-    //         setCurrentImageIndex((prevIndex) =>
-    //             prevIndex === slideImages.length - 1 ? 0 : prevIndex + 1
-    //         );
-    //     }, 4000);
-
-    //     return () => clearTimeout(slideInterval);
-    // }, [currentImageIndex, slideImages.length]);
+   
 
     const [activeGallery, setActiveGallery] = useState<number>(1);
     const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -80,8 +72,23 @@ const Hero = () => {
     ];
 
     const concertImage = [
-        '/images/concertImages/concert_img.png',
+        // '/images/concertImages/concert_img_1.png',
+        // '/images/concertImages/concert_img_2.webp',
+        // '/images/concertImages/concert_img_3.webp',
+        '/images/concertImages/concert_img_4.webp',
+        '/images/concertImages/concert_img_5.webp',
+        '/images/concertImages/concert_img_6.webp',
     ]
+
+    useEffect(() => {
+        const slideInterval = setTimeout(() => {
+            setCurrentImageIndex((prevIndex) =>
+                prevIndex === concertImage.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 4000);
+
+        return () => clearTimeout(slideInterval);
+    }, [currentImageIndex, concertImage.length]);
 
     const currentGalleryImages = activeGallery==1 ? concertImage : (activeGallery === 2 ? helixImages : tinyYatraImages);
 
@@ -153,12 +160,12 @@ const Hero = () => {
                             </div>
                         }
                         { activeGallery === 1 && 
-                            <>
+                            <div className='flex flex-col items-center'>
                                 <div className={`${styles.imageSlider} flex flex-col items-center`}>
                                     {concertImage.map((slide, index) => (
                                         <div
                                             key={index}
-                                            className={`${styles.slide} ${styles.activeSlide }`}
+                                            className={`${styles.slide} ${currentImageIndex == index ? styles.activeSlide : '' }`}
                                         >
                                             <div className="mb-5 rounded-xl overflow-hidden flex justify-center items-center">
                                                 <Image
@@ -172,14 +179,14 @@ const Hero = () => {
                                             </div>
                                         </div>
                                     ))}
+                                        </div>
                                     <button
-                                        className={`${styles.tabButton} ${styles.activeTab}`}
+                                        className={`${styles.tabButton} ${styles.activeTab} mx-auto`}
                                         onClick={() => setIsModalOpen(true)}
                                         >
                                         Book Ticket
                                     </button>
-                                </div>
-                            </>
+                            </div>
                         }
                     </div>
                 </section>
