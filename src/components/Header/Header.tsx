@@ -16,18 +16,18 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        const modalShown = sessionStorage.getItem('ticketModalShown');
+    // useEffect(() => {
+    //     const modalShown = sessionStorage.getItem('ticketModalShown');
         
-        if (!modalShown) {
-          const timer = setTimeout(() => {
-            setIsModalOpen(true);
-            sessionStorage.setItem('ticketModalShown', 'true');
-          }, 2000);
+    //     if (!modalShown) {
+    //       const timer = setTimeout(() => {
+    //         setIsModalOpen(true);
+    //         sessionStorage.setItem('ticketModalShown', 'true');
+    //       }, 2000);
     
-          return () => clearTimeout(timer);
-        }
-      }, []);
+    //       return () => clearTimeout(timer);
+    //     }
+    //   }, []);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
