@@ -253,12 +253,11 @@ const TicketModal: React.FC<TicketModalProps> = ({ isModalOpen = false, setIsMod
 
                 {/* <div className="flex flex-col sm:flex-row gap-3">
                   <Link
-                    href="https://wa.me/916356179600"
-                    target="_blank"
+                    href="/tickets"
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-700 px-5 py-3 text-white text-sm sm:text-base font-medium shadow-md transition-all hover:bg-emerald-800 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/60"
                     onClick={closeModal}
                   >
-                    Book via WhatsApp
+                    Book ticket
                   </Link>
                 </div> */}
               </div>
