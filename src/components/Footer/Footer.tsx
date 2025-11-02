@@ -99,8 +99,11 @@ export default function Footer() {
                 </div>
 
                 <div className="border-t border-amber-200 mt-8 pt-6 text-center">
-                    <p className="mb-3">
+                    <p className="mb-1">
                         &copy; {new Date().getFullYear()} Dream Foundation. All Rights Reserved.
+                    </p>
+                    <p className="mb-3 text-sm text-white">
+                        Owned and managed by <strong>Grow Like Gujarati</strong>
                     </p>
                     <div className="flex flex-wrap justify-center gap-4 text-sm">
                         <Link href="/terms-and-conditions" className="text-teal-700 hover:text-teal-800 hover:underline transition-colors">
