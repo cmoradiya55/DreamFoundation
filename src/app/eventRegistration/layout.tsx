@@ -10,6 +10,5 @@ export default function EventRegistrationLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // return <>{children}</>;
-  return <>No Page Found</>;
+  return <>{children}</>;
 }
