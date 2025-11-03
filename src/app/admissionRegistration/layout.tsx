@@ -10,5 +10,6 @@ export default function AdmissionRegistrationLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  // return <>{children}</>;
+  return <>No Page Found</>;
 }

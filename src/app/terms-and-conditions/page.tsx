@@ -20,7 +20,7 @@ export default function TermsAndConditions() {
 
           <section>
             <p className="mb-6">
-              The Platform is owned and operated by <strong>Dream Foundation</strong>, an educational initiative owned by <strong>Grow Like Gujarati</strong>
+              The Platform <strong>Dream Foundation</strong>, owned by <strong>Grow Like Gujarati</strong>
               (&quot;Platform Owner&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By using our website, services, or making payments, you agree to the following Terms & Conditions.
             </p>
 
