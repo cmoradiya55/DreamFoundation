@@ -8,10 +8,10 @@ import { FaInstagram } from 'react-icons/fa';
 
 export default function Footer() {
 
-    const navLinks = [
-        { id: 2, title: 'Admission Registration', path: "/admissionRegistration" },
-        { id: 3, title: 'Event Registration', path: "/eventRegistration" },
-    ];
+    // const navLinks = [
+    //     { id: 2, title: 'Admission Registration', path: "/admissionRegistration" },
+    //     { id: 3, title: 'Event Registration', path: "/eventRegistration" },
+    // ];
     return (
         <footer className={styles.footer}>
             <div className={styles.container}>
@@ -38,12 +38,13 @@ export default function Footer() {
                             </div>
                         </Link>
                         <p className={styles.description}>
-                            Empowering dreams and transforming lives through education and opportunity.
+                            Empowering dreams and transforming lives 
+                            {/* through education and opportunity. */}
                         </p>
                     </div>
 
                     <div className={styles.linksSection}>
-                        <h3 className={styles.sectionTitle}>Quick Links</h3>
+                        {/* <h3 className={styles.sectionTitle}>Quick Links</h3>
                         <ul className={`${styles.navList} ${styles.mobileList}`}>
                             {navLinks.map((link) => (
                                 <li key={link.id} className={styles.navItem}>
@@ -55,7 +56,7 @@ export default function Footer() {
                                     </Link>
                                 </li>
                             ))}
-                        </ul>
+                        </ul> */}
                     </div>
 
                     <div className={styles.contactSection}>
