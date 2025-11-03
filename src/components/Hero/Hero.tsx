@@ -5,11 +5,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Hero.module.css';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import TicketModal from '../TicketModal/TicketModal';
+// import TicketModal from '../TicketModal/TicketModal';
+import { useRouter } from 'next/navigation';
 
 const Hero = () => {
-    
-    
+
+
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     // const slideImages = [
@@ -37,12 +38,13 @@ const Hero = () => {
     // ];
 
     // Auto slide functionality with setTimeout
-   
+
 
     const [activeGallery, setActiveGallery] = useState<number>(1);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    const router = useRouter();
 
     const helixImages = [
         '/images/Helix/Helix_Academy_001.webp',
@@ -90,7 +92,7 @@ const Hero = () => {
         return () => clearTimeout(slideInterval);
     }, [currentImageIndex, concertImage.length]);
 
-    const currentGalleryImages = activeGallery==1 ? concertImage : (activeGallery === 2 ? helixImages : tinyYatraImages);
+    const currentGalleryImages = activeGallery == 1 ? concertImage : (activeGallery === 2 ? helixImages : tinyYatraImages);
 
     const openLightbox = (index: number) => {
         setLightboxIndex(index);
@@ -109,14 +111,16 @@ const Hero = () => {
         setLightboxIndex((prev) => (prev - 1 + currentGalleryImages.length) % currentGalleryImages.length);
     };
 
-    
+    const handleBookTicket = () => {
+        router.push('https://allevents.in/rajkot/iktaara-hardik-dave-live-in-concert-tickets/80003172510681?ref=smdl');
+    }
 
     return (
         <>
             <main className={styles.main}>
 
                 {/* Hero Section with Image Slider */}
-                <TicketModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                {/* <TicketModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/> */}
 
                 <section className={styles.gallerySection}>
                     <div className={styles.container}>
@@ -127,7 +131,7 @@ const Hero = () => {
                             >
                                 Live Concert
                             </button>
-                            {/* <button
+                            <button
                                 className={`${styles.tabButton} ${activeGallery === 2 ? styles.activeTab : ''}`}
                                 onClick={() => setActiveGallery(2)}
                             >
@@ -138,7 +142,7 @@ const Hero = () => {
                                 onClick={() => setActiveGallery(3)}
                             >
                                 Tiny Yatra
-                            </button> */}
+                            </button>
                         </div>
 
                         {activeGallery !== 1 &&
@@ -159,7 +163,7 @@ const Hero = () => {
                                 ))}
                             </div>
                         }
-                        { activeGallery === 1 && 
+                        {/* { activeGallery === 1 && 
                             <div className='flex flex-col items-center'>
                                 <div className={`${styles.imageSlider} flex flex-col items-center`}>
                                     {concertImage.map((slide, index) => (
@@ -182,17 +186,70 @@ const Hero = () => {
                                         </div>
                                     <button
                                         className={`${styles.tabButton} ${styles.activeTab} mx-auto`}
-                                        onClick={() => setIsModalOpen(true)}
+                                        onClick={() => handleBookTicket()}
                                         >
                                         Book Ticket
                                     </button>
+                            </div>
+                        } */}
+                        {activeGallery === 1 &&
+                            <div className='flex flex-col items-center'>
+                                {/* Announcement Banner */}
+                                <div className={`${styles.tabButton} ${styles.activeTab} mb-4`}>
+                                    <div className={styles.announcementContent}>
+                                        <div className={styles.announcementIcon}>🎉</div>
+                                        <div className={styles.announcementText}>
+                                            <span className={styles.highlight}>Online Booking Now Live!</span>
+                                            <span className={styles.thankYou}>
+                                                Thank you for the incredible response to offline bookings -
+                                                due to overwhelming demand, we&#39;re excited to launch online ticketing!
+                                            </span>
+                                        </div>
+                                        <div className={styles.fireworks}>✨</div>
+                                    </div>
+                                </div>
+
+                                <div className={`${styles.imageSlider} flex flex-col items-center`}>
+                                    {concertImage.map((slide, index) => (
+                                        <div
+                                            key={index}
+                                            className={`${styles.slide} ${currentImageIndex == index ? styles.activeSlide : ''}`}
+                                        >
+                                            <div className="mb-5 rounded-xl overflow-hidden flex justify-center items-center">
+                                                <Image
+                                                    src={slide}
+                                                    alt="Live Concert"
+                                                    width={400}
+                                                    height={200}
+                                                    className="w-[350px] h-auto object-cover rounded-xl"
+                                                    priority
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <button
+                                    className={`${styles.tabButton} ${styles.activeTab} ${styles.pulseAnimation} mx-auto`}
+                                    onClick={() => handleBookTicket()}
+                                >
+                                    Book Your Tickets Now
+                                </button>
+
+                                {/* Quick Stats */}
+                                <div className={styles.quickStats}>
+                                    <div className={styles.statItem}>
+                                        <span className={styles.statNumber}>1500+</span>
+                                        <span className={styles.statLabel}>Tickets Already Booked!</span>
+                                    </div>
+                                </div>
                             </div>
                         }
                     </div>
                 </section>
 
                 {/* About Section */}
-                {/* <section className={styles.aboutSection}>
+                <section className={styles.aboutSection}>
                     <div className={styles.container}>
                         <div className={styles.aboutContent}>
                             <h2 className={styles.sectionTitle}>About Dream Foundation</h2>
@@ -234,11 +291,11 @@ const Hero = () => {
 
                         </div>
                     </div>
-                </section> */}
+                </section>
 
 
                 {/* CTA Section */}
-                {/* <section className={styles.ctaSection}>
+                <section className={styles.ctaSection}>
                     <div className={styles.container}>
                         <h2 className={styles.ctaTitle}>Ready to Start Your Journey?</h2>
                         <p className={styles.ctaText}>
@@ -253,9 +310,9 @@ const Hero = () => {
                             </Link>
                         </div>
                     </div>
-                </section> */}
+                </section>
             </main>
-           {/* {lightboxOpen && (
+            {lightboxOpen && (
                 <div className={styles.lightbox} onClick={closeLightbox}>
                     <button className={styles.lightboxClose} onClick={closeLightbox}>
                         <X size={32} />
@@ -275,7 +332,7 @@ const Hero = () => {
                         />
                     </div>
                 </div>
-            )} */}
+            )}
         </>
     );
 };
