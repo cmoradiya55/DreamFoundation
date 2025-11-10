@@ -10,7 +10,7 @@ export default function Footer() {
 
     const navLinks = [
         { id: 2, title: 'Admission Registration', path: "/admissionRegistration" },
-        { id: 3, title: 'Event Registration', path: "/eventRegistration" },
+            // { id: 3, title: 'Event Registration', path: "/eventRegistration" },
     ];
     return (
         <footer className={styles.footer}>
