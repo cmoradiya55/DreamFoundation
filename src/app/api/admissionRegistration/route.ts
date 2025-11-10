@@ -73,6 +73,35 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // STEP 2: After successful database storage, send emails using existing sendEmail API
+    try {
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/sendEmail`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'admissionRegistration',
+          registrationId,
+          fullName,
+          dateOfBirth,
+          email,
+          mobile,
+          mobileCountryCode,
+          address,
+          aadharNumber,
+          children: children || [],
+        }),
+      });
+
+      if (emailResponse.ok) {
+        console.log('Admission registration emails sent successfully');
+      } else {
+        console.error('Error sending admission registration emails');
+      }
+    } catch (emailError) {
+      console.error('Error calling sendEmail API:', emailError);
+      // Don't fail the request if email sending fails - data is already saved
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Admission registration saved successfully and confirmation email sent',

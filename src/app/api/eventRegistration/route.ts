@@ -72,6 +72,43 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // STEP 2: After successful database storage, send emails using existing sendEmail API
+    try {
+      const eventDetail = {
+        eventName: "Dream Foundation",
+        eventDate: "9th November 2025",
+        eventTime: "5 pm to onwards",
+        eventLocation: "Shaneshwar party plot, Mavdi main road, Rajkot",
+      };
+
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/sendEmail`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'eventRegistration',
+          registrationId,
+          fullName,
+          dateOfBirth,
+          email,
+          mobile,
+          mobileCountryCode,
+          address,
+          aadharNumber,
+          children: children || [],
+          eventDetail,
+        }),
+      });
+
+      if (emailResponse.ok) {
+        console.log('Event registration emails sent successfully');
+      } else {
+        console.error('Error sending event registration emails');
+      }
+    } catch (emailError) {
+      console.error('Error calling sendEmail API:', emailError);
+      // Don't fail the request if email sending fails - data is already saved
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Event registration saved successfully',

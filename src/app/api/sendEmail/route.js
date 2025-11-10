@@ -289,12 +289,9 @@ export async function POST(req) {
         // Resolve absolute path to the letterhead image in public/
         const mailOptions = {
             from: process.env.SEND_EMAIL, 
-            to: "mvinfinus@gmail.com", 
-            replyTo: body.email,
-            subject: body.formType === 'contactUS' ?  `Contact Request from ${body.name} - Dream Foundation` : 
-                     body.formType === 'admissionRegistration' ? `New Admission Registration - ${body.fullName} - Dream Foundation` :
-                     body.formType === 'eventRegistration' ? `New Event Registration - ${body.fullName} - Dream Foundation` :
-                     `Sample Request from ${body.businessName} - Dream Foundation`,
+            to: body.email,
+            subject: body.formType === 'admissionRegistration' ? `New Admission Registration - ${body.fullName} - Dream Foundation` :
+                     body.formType === 'eventRegistration' ? `New Event Registration - ${body.fullName} - Dream Foundation` : "",
             text: emailContent,
             html: htmlEmailContent,
         };
@@ -346,9 +343,7 @@ export async function POST(req) {
 
         const successMessage = body.formType === 'admissionRegistration' 
             ? "Registration submitted successfully! Check your email for confirmation." 
-            : body.formType === 'contactUS' 
-            ? "Contact request submitted successfully"
-            : "Sample request submitted successfully";
+            : "Event registration submitted successfully! Check your email for confirmation.";
 
         return NextResponse.json(
             { success: true, message: successMessage },
