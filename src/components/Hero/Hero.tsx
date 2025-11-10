@@ -40,7 +40,7 @@ const Hero = () => {
     // Auto slide functionality with setTimeout
 
 
-    const [activeGallery, setActiveGallery] = useState<number>(1);
+    const [activeGallery, setActiveGallery] = useState<number>(2);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
     // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,26 +73,27 @@ const Hero = () => {
         '/images/canva_6.webp',
     ];
 
-    const concertImage = [
-        // '/images/concertImages/concert_img_1.png',
-        // '/images/concertImages/concert_img_2.webp',
-        // '/images/concertImages/concert_img_3.webp',
-        '/images/concertImages/concert_img_4.webp',
-        '/images/concertImages/concert_img_5.webp',
-        '/images/concertImages/concert_img_6.webp',
-    ]
+    // const concertImage = [
+    //     // '/images/concertImages/concert_img_1.png',
+    //     // '/images/concertImages/concert_img_2.webp',
+    //     // '/images/concertImages/concert_img_3.webp',
+    //     '/images/concertImages/concert_img_4.webp',
+    //     '/images/concertImages/concert_img_5.webp',
+    //     '/images/concertImages/concert_img_6.webp',
+    // ]
 
-    useEffect(() => {
-        const slideInterval = setTimeout(() => {
-            setCurrentImageIndex((prevIndex) =>
-                prevIndex === concertImage.length - 1 ? 0 : prevIndex + 1
-            );
-        }, 4000);
+    // useEffect(() => {
+    //     const slideInterval = setTimeout(() => {
+    //         setCurrentImageIndex((prevIndex) =>
+    //             prevIndex === concertImage.length - 1 ? 0 : prevIndex + 1
+    //         );
+    //     }, 4000);
 
-        return () => clearTimeout(slideInterval);
-    }, [currentImageIndex, concertImage.length]);
+    //     return () => clearTimeout(slideInterval);
+    // }, [currentImageIndex, concertImage.length]);
 
-    const currentGalleryImages = activeGallery == 1 ? concertImage : (activeGallery === 2 ? helixImages : tinyYatraImages);
+    // const currentGalleryImages = activeGallery == 1 ? concertImage : (activeGallery === 2 ? helixImages : tinyYatraImages);
+    const currentGalleryImages = (activeGallery === 2 ? helixImages : tinyYatraImages);
 
     const openLightbox = (index: number) => {
         setLightboxIndex(index);
@@ -125,12 +126,12 @@ const Hero = () => {
                 <section className={styles.gallerySection}>
                     <div className={styles.container}>
                         <div className={styles.galleryTabs}>
-                            <button
+                            {/* <button
                                 className={`${styles.tabButton} ${activeGallery === 1 ? styles.activeTab : ''}`}
                                 onClick={() => setActiveGallery(1)}
                             >
                                 Live Concert
-                            </button>
+                            </button> */}
                             <button
                                 className={`${styles.tabButton} ${activeGallery === 2 ? styles.activeTab : ''}`}
                                 onClick={() => setActiveGallery(2)}
@@ -161,88 +162,6 @@ const Hero = () => {
                                         />
                                     </div>
                                 ))}
-                            </div>
-                        }
-                        {/* { activeGallery === 1 && 
-                            <div className='flex flex-col items-center'>
-                                <div className={`${styles.imageSlider} flex flex-col items-center`}>
-                                    {concertImage.map((slide, index) => (
-                                        <div
-                                            key={index}
-                                            className={`${styles.slide} ${currentImageIndex == index ? styles.activeSlide : '' }`}
-                                        >
-                                            <div className="mb-5 rounded-xl overflow-hidden flex justify-center items-center">
-                                                <Image
-                                                    src={slide}
-                                                    alt="Live Concert"
-                                                    width={400}
-                                                    height={200}
-                                                    className="w-[350px] h-auto object-cover rounded-xl"
-                                                    priority
-                                                />
-                                            </div>
-                                        </div>
-                                    ))}
-                                        </div>
-                                    <button
-                                        className={`${styles.tabButton} ${styles.activeTab} mx-auto`}
-                                        onClick={() => handleBookTicket()}
-                                        >
-                                        Book Ticket
-                                    </button>
-                            </div>
-                        } */}
-                        {activeGallery === 1 &&
-                            <div className='flex flex-col items-center'>
-                                {/* Announcement Banner */}
-                                <div className={`${styles.tabButton} ${styles.activeTab} mb-4`}>
-                                    <div className={styles.announcementContent}>
-                                        <div className={styles.announcementIcon}>🎉</div>
-                                        <div className={styles.announcementText}>
-                                            <span className={styles.highlight}>Online Booking Now Live!</span>
-                                            <span className={styles.thankYou}>
-                                                Thank you for the incredible response to offline bookings -
-                                                due to overwhelming demand, we&#39;re excited to launch online ticketing!
-                                            </span>
-                                        </div>
-                                        <div className={styles.fireworks}>✨</div>
-                                    </div>
-                                </div>
-
-                                <div className={`${styles.imageSlider} flex flex-col items-center`}>
-                                    {concertImage.map((slide, index) => (
-                                        <div
-                                            key={index}
-                                            className={`${styles.slide} ${currentImageIndex == index ? styles.activeSlide : ''}`}
-                                        >
-                                            <div className="mb-5 rounded-xl overflow-hidden flex justify-center items-center">
-                                                <Image
-                                                    src={slide}
-                                                    alt="Live Concert"
-                                                    width={400}
-                                                    height={200}
-                                                    className="w-[350px] h-auto object-cover rounded-xl"
-                                                    priority
-                                                />
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <button
-                                    className={`${styles.tabButton} ${styles.activeTab} ${styles.pulseAnimation} mx-auto`}
-                                    onClick={() => handleBookTicket()}
-                                >
-                                    Book Your Tickets Now
-                                </button>
-
-                                {/* Quick Stats */}
-                                <div className={styles.quickStats}>
-                                    <div className={styles.statItem}>
-                                        <span className={styles.statNumber}>1500+</span>
-                                        <span className={styles.statLabel}>Tickets Already Booked!</span>
-                                    </div>
-                                </div>
                             </div>
                         }
                     </div>
@@ -305,9 +224,9 @@ const Hero = () => {
                             <Link href="/admissionRegistration" className={styles.primaryButton}>
                                 Apply for Admission
                             </Link>
-                            <Link href="/eventRegistration" className={styles.secondaryButton}>
+                            {/* <Link href="/eventRegistration" className={styles.secondaryButton}>
                                 Register for Events
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
                 </section>
