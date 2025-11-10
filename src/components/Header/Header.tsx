@@ -8,7 +8,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import TicketModal from '../TicketModal/TicketModal'; 
 
 const navLinks = [
-    { id: 1, title: 'EVENT REGISTRATION', path: "/eventRegistration" },
+    // { id: 1, title: 'EVENT REGISTRATION', path: "/eventRegistration" },
     { id: 2, title: 'ADMISSION REGISTRATION', path: "/admissionRegistration" },
 ];
 
