@@ -16,6 +16,7 @@ interface RadioInputProps {
   options: RadioOption[];
   required?: boolean;
   error?: FieldError;
+  icon?: React.ReactNode;
   className?: string;
   direction?: 'horizontal' | 'vertical';
 }
@@ -27,40 +28,49 @@ const RadioInput: React.FC<RadioInputProps> = ({
   options,
   required = false,
   error,
+  icon,
   className = '',
   direction = 'horizontal',
 }) => {
-  const containerClass = direction === 'horizontal' ? 'flex flex-wrap gap-4' : 'space-y-2';
+  const containerClass = direction === 'horizontal' ? 'flex flex-wrap gap-3 sm:gap-4' : 'space-y-2';
 
   return (
-    <div className={`w-full ${className}`}>
-      <fieldset>
-        <legend className={`form-label ${required ? 'required' : ''}`}>
+    <div className={`space-y-2 w-full ${className}`}>
+      <label 
+          htmlFor={name} 
+          className="flex text-sm font-semibold items-center sm:gap-2 md:gap-1 gap-1 text-teal-700">
+          {icon}
           {label}
-        </legend>
-        <Controller
-          name={name}
-          control={control}
-          render={({ field }) => (
-            <div className={containerClass}>
-              {options.map((option) => (
-                <label key={option.value} className="flex items-center cursor-pointer">
-                  <input
-                    {...field}
-                    type="radio"
-                    value={option.value}
-                    checked={field.value === option.value}
-                    className="form-radio"
-                  />
-                  <span className="ml-3 text-sm font-medium text-teal-700">{option.label}</span>
-                </label>
-              ))}
-            </div>
-          )}
-        />
-      </fieldset>
+          {required && <span className="text-red-500">*</span>}
+        </label>
+      <Controller
+        name={name}
+        control={control}
+        rules={required ? { required: `${label} is required` } : undefined}
+        render={({ field }) => (
+          <div className={containerClass}>
+            {options.map((option: RadioOption) => (
+              <label key={option.value} className="flex items-center cursor-pointer mt-1 sm:mt-2 group">
+                <input
+                  type="radio"
+                  value={option.value}
+                  checked={field.value === option.value}
+                  onChange={() => field.onChange(option.value)}
+                  name={field.name}
+                  ref={field.ref}
+                  className="w-5 h-5 cursor-pointer border-2 border-teal-700 transition-all accent-teal-600 focus:ring-2 focus:ring-teal-200"
+                />
+                <span className={`ml-3 text-sm font-medium transition-colors ${field.value === option.value
+                    ? 'text-teal-700 font-semibold'
+                    : 'text-gray-700 group-hover:text-teal-600'
+                  }`}>{option.label}</span>
+              </label>
+            ))}
+          </div>
+        )}
+      />
       {error && (
-        <p className="error-message" role="alert">
+        <p className="text-red-500 text-sm mt-1" role="alert">
           {error.message}
         </p>
       )}

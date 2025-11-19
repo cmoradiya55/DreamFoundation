@@ -38,6 +38,7 @@ const TextArea: React.FC<TextAreaProps> = ({
       <Controller
         name={name}
         control={control}
+        rules={required ? { required: `${label} is required` } : undefined}
         render={({ field }) => (
           <textarea
             {...field}

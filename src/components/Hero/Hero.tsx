@@ -1,17 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from './Hero.module.css';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-// import TicketModal from '../TicketModal/TicketModal';
 import { useRouter } from 'next/navigation';
 
 const Hero = () => {
 
 
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    // const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     // const slideImages = [
     //     { src: '/images/canva_2.webp', fallback: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
@@ -43,7 +41,6 @@ const Hero = () => {
     const [activeGallery, setActiveGallery] = useState<number>(2);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
-    // const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
 
     const helixImages = [
@@ -112,142 +109,159 @@ const Hero = () => {
         setLightboxIndex((prev) => (prev - 1 + currentGalleryImages.length) % currentGalleryImages.length);
     };
 
-    const handleBookTicket = () => {
-        router.push('https://allevents.in/rajkot/iktaara-hardik-dave-live-in-concert-tickets/80003172510681?ref=smdl');
-    }
+    const tabButtonClasses = (isActive: boolean) =>
+        `px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full font-semibold text-sm sm:text-base lg:text-lg shadow-md transition-all duration-300 ${
+            isActive
+                ? 'bg-gradient-to-r from-[#042f2e] to-[#55a976] text-white'
+                : 'bg-white text-zinc-700 hover:-translate-y-0.5 hover:shadow-lg'
+        }`;
+
+    const featureCardClasses =
+        'bg-white p-6 rounded-2xl shadow-[0_8px_25px_rgba(17,94,89,0.08)] border border-teal-400/10 text-center transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(17,94,89,0.15)]';
 
     return (
         <>
-            <main className={styles.main}>
-
-                {/* Hero Section with Image Slider */}
-                {/* <TicketModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/> */}
-
-                <section className={styles.gallerySection}>
-                    <div className={styles.container}>
-                        <div className={styles.galleryTabs}>
-                            {/* <button
-                                className={`${styles.tabButton} ${activeGallery === 1 ? styles.activeTab : ''}`}
-                                onClick={() => setActiveGallery(1)}
-                            >
-                                Live Concert
-                            </button> */}
+            <main className="min-h-screen flex flex-col bg-teal-50">
+                <section className="bg-teal-200/60 py-8 md:py-14">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
+                        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-6 md:mb-10">
                             <button
-                                className={`${styles.tabButton} ${activeGallery === 2 ? styles.activeTab : ''}`}
+                                className={tabButtonClasses(activeGallery === 2)}
                                 onClick={() => setActiveGallery(2)}
                             >
                                 Helix Academy
                             </button>
                             <button
-                                className={`${styles.tabButton} ${activeGallery === 3 ? styles.activeTab : ''}`}
+                                className={tabButtonClasses(activeGallery === 3)}
                                 onClick={() => setActiveGallery(3)}
                             >
                                 Tiny Yatra
                             </button>
                         </div>
 
-                        {activeGallery !== 1 &&
-                            <div className={styles.galleryGrid}>
-                                {currentGalleryImages.map((image, index) => (
-                                    <div
-                                        key={index}
-                                        className={`${styles.galleryItem} ${activeGallery === 3 ? styles.tinyYatraItem : ''}`}
-                                        onClick={() => openLightbox(index)}
-                                    >
-                                        <Image
-                                            src={image}
-                                            alt={`${activeGallery === 2 ? 'Helix Academy' : (activeGallery === 3 ? 'Tiny Yatra' : 'Live Concert')} image ${index + 1}`}
-                                            fill
-                                            className={styles.galleryImage}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        }
+                        <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+                            {currentGalleryImages.map((image, index) => (
+                                <div
+                                    key={image}
+                                    className={`relative overflow-hidden rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] cursor-pointer transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] ${
+                                        activeGallery === 3 ? 'aspect-[3/3]' : 'aspect-[4/3]'
+                                    }`}
+                                    onClick={() => openLightbox(index)}
+                                >
+                                    <Image
+                                        src={image}
+                                        alt={`${activeGallery === 2 ? 'Helix Academy' : 'Tiny Yatra'} image ${index + 1}`}
+                                        fill
+                                        className="object-cover transition-transform duration-300 hover:scale-105"
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
 
-                {/* About Section */}
-                <section className={styles.aboutSection}>
-                    <div className={styles.container}>
-                        <div className={styles.aboutContent}>
-                            <h2 className={styles.sectionTitle}>About Dream Foundation</h2>
-                            <p className={styles.aboutText}>
+                <section className="py-10 md:py-20 bg-teal-50">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12 md:space-y-16">
+                        <div className="text-center">
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#134e4a] mb-4 sm:mb-6">About Dream Foundation</h2>
+                            <p className="text-base text-[#0f766e] max-w-3xl mx-auto leading-1.3 sm:leading-1.5 md:leading-6 lg:leading-relaxed">
                                 Dream Foundation is dedicated to providing quality education and opportunities
                                 to help individuals achieve their dreams. Through our comprehensive programs
                                 and community initiatives, we strive to create a positive impact on society.
                             </p>
-
-                            <div className={styles.features}>
-                                <div className={styles.feature}>
-                                    <h3>Quality Education</h3>
-                                    <p>Comprehensive educational programs designed to meet diverse learning needs.</p>
+                            <div className="grid gap-4 sm:gap-6 lg:gap-8 mt-8 md:mt-10 md:grid-cols-3">
+                                <div className={featureCardClasses}>
+                                    <h3 className="text-lg sm:text-xl font-semibold text-[#115e59] mb-2 sm:mb-3">Quality Education</h3>
+                                        <p className="text-sm sm:text-base text-[#0f766e] leading-1.3 sm:leading-1.5 md:leading-6 lg:leading-relaxed">
+                                        Comprehensive educational programs designed to meet diverse learning needs.
+                                    </p>
                                 </div>
-                                <div className={styles.feature}>
-                                    <h3>Community Events</h3>
-                                    <p>Regular events and workshops to engage and empower our community.</p>
+                                <div className={featureCardClasses}>
+                                    <h3 className="text-lg sm:text-xl font-semibold text-[#115e59] mb-2 sm:mb-3">Community Events</h3>
+                                    <p className="text-sm sm:text-base text-[#0f766e] leading-1.3 sm:leading-1.5 md:leading-6 lg:leading-relaxed">
+                                        Regular events and workshops to engage and empower our community.
+                                    </p>
                                 </div>
-                                <div className={styles.feature}>
-                                    <h3>Career Development</h3>
-                                    <p>Professional development opportunities to help individuals advance their careers.</p>
+                                <div className={featureCardClasses}>
+                                    <h3 className="text-lg sm:text-xl font-semibold text-[#115e59] mb-2 sm:mb-3">Career Development</h3>
+                                    <p className="text-sm sm:text-base text-[#0f766e] leading-1.3 sm:leading-1.5 md:leading-6 lg:leading-relaxed">
+                                        Professional development opportunities to help individuals advance their careers.
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
-
-                        <div className={styles.aboutContent}>
-                            <h2 className={styles.sectionTitle}>Our Vision</h2>
-                            <p className={styles.aboutText}>
+                        <div className="text-center">
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#134e4a] mb-4 sm:mb-6">Our Vision</h2>
+                            <p className="text-base text-[#0f766e] max-w-4xl mx-auto leading-1.3 sm:leading-1.5 md:leading-6 lg:leading-relaxed">
                                 Today&apos;s students are going to face the challenges of life after 15–20 years. After 15–20 years our world is going to be very different with different values, different technology. We need to shape our kids for upcoming world and its challenges. Don&apos;t limit a child to your own learning, for he was born in another time. According to Vedic traditions the purpose of human life is Dharma, Artha, Kama and Moksha.
                             </p>
                         </div>
 
-                        <div className={styles.aboutContent}>
-                            <h2 className={styles.sectionTitle}>Our Mission</h2>
-                            <p className={styles.aboutText}>
-                                The illiterate of the future will not be the one who cannot read. It will be the person who does not know how to learn. The foundation of every country is the education of its youth. Our vision is to prepare true global citizens for the next generation who can cope with both the challenges of outside world and evolution of consciousness in themselves.
+                        <div className="text-center">
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#134e4a] mb-4 sm:mb-6">Our Mission</h2>
+                            <p className="text-base text-[#0f766e] max-w-4xl mx-auto leading-1.3 sm:leading-1.5 md:leading-6 lg:leading-relaxed">
+                                The illiterate of the future will not be the one who cannot read. It will be the person who does not know how to learn. The foundation of every country is the education of its youth. Our vision is to prepare true global citizens for the next generation who can cope with both the challenges of outside world and evolution of consciousness in themselves.
                             </p>
-
                         </div>
                     </div>
                 </section>
 
-
-                {/* CTA Section */}
-                <section className={styles.ctaSection}>
-                    <div className={styles.container}>
-                        <h2 className={styles.ctaTitle}>Ready to Start Your Journey?</h2>
-                        <p className={styles.ctaText}>
+                <section className="py-12 md:py-16 bg-teal-600 text-white text-center">
+                    <div className="max-w-4xl mx-auto px-4 sm:px-5">
+                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">Ready to Start Your Journey?</h2>
+                        <p className="text-base mb-6 sm:mb-8 leading-1.3 sm:leading-1.5 md:leading-6 lg:leading-relaxed">
                             Join thousands of students and professionals who have transformed their lives with Dream Foundation.
                         </p>
-                        <div className={styles.ctaButtons}>
-                            <Link href="/admissionRegistration" className={styles.primaryButton}>
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                            <Link
+                                href="/studentRegistration"
+                                className="inline-flex items-center justify-center rounded-full bg-[#115e59] border-2 border-[#115e59] px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold uppercase tracking-wide transition-all duration-300 hover:bg-[#042f2e] hover:border-[#042f2e] hover:-translate-y-0.5"
+                            >
                                 Apply for Admission
                             </Link>
-                            {/* <Link href="/eventRegistration" className={styles.secondaryButton}>
-                                Register for Events
-                            </Link> */}
                         </div>
                     </div>
                 </section>
             </main>
             {lightboxOpen && (
-                <div className={styles.lightbox} onClick={closeLightbox}>
-                    <button className={styles.lightboxClose} onClick={closeLightbox}>
-                        <X size={32} />
+                <div
+                    className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4 sm:p-6"
+                    onClick={closeLightbox}
+                >
+                    <button
+                        className="fixed top-4 right-4 sm:top-6 sm:right-6 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur-md flex items-center justify-center transition-transform duration-200 hover:scale-105 hover:bg-white/20"
+                        onClick={closeLightbox}
+                    >
+                        <X size={28} />
                     </button>
-                    <button className={styles.lightboxPrev} onClick={(e) => { e.stopPropagation(); prevImage(); }}>
-                        <ChevronLeft size={48} />
+                    <button
+                        className="hidden sm:flex absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur-md items-center justify-center hover:scale-105 transition"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            prevImage();
+                        }}
+                    >
+                        <ChevronLeft size={32} />
                     </button>
-                    <button className={styles.lightboxNext} onClick={(e) => { e.stopPropagation(); nextImage(); }}>
-                        <ChevronRight size={48} />
+                    <button
+                        className="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur-md items-center justify-center hover:scale-105 transition"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            nextImage();
+                        }}
+                    >
+                        <ChevronRight size={32} />
                     </button>
-                    <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+                    <div
+                        className="relative w-full max-w-5xl aspect-video"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <Image
                             src={currentGalleryImages[lightboxIndex]}
-                            alt={`${activeGallery === 2 ? 'Helix Academy' : (activeGallery === 3 ? 'Tiny Yatra' : 'Live Concert')} image ${lightboxIndex + 1}`}
+                            alt={`${activeGallery === 2 ? 'Helix Academy' : 'Tiny Yatra'} image ${lightboxIndex + 1}`}
                             fill
-                            className={styles.lightboxImage}
+                            className="object-contain"
                         />
                     </div>
                 </div>

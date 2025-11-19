@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Control, Controller, FieldError } from 'react-hook-form';
+import { Control, Controller, FieldError, RegisterOptions } from 'react-hook-form';
 import { AlertCircle } from 'lucide-react';
 
 interface TextInputProps {
@@ -10,11 +10,15 @@ interface TextInputProps {
   control: Control<any>;
   label: string;
   placeholder?: string;
-  type?: 'text' | 'email' | 'number';
+  type?: 'text' | 'email' | 'number' | 'date';
   required?: boolean;
   error?: FieldError;
   className?: string;
   icon?: React.ReactNode;
+  disabled?: boolean;
+  hideLabel?: boolean;
+  inputClassName?: string;
+  rules?: RegisterOptions;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -27,17 +31,37 @@ const TextInput: React.FC<TextInputProps> = ({
   error,
   className = '',
   icon,
+  disabled = false,
+  hideLabel = false,
+  inputClassName = 'px-4 py-3',
+  rules,
 }) => {
   return (
     <div className={`space-y-2 ${className}`}>
-      <label htmlFor={name} className="block text-sm font-semibold text-teal-700 flex items-center gap-2">
-        {icon}
-        {label}
-        {required && <span className="text-red-500">*</span>}
-      </label>
+      {!hideLabel && (
+        <label 
+          htmlFor={name} 
+          className={`block text-sm font-semibold flex items-center gap-2 ${
+            disabled ? 'text-gray-500' : 'text-teal-700'
+          }`}
+        >
+          {icon}
+          {label}
+          {required && <span className="text-red-500">*</span>}
+        </label>
+      )}
       <Controller
         name={name}
         control={control}
+        rules={rules || (required ? { 
+          required: `${label} is required`,
+          ...(type === 'email' && {
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: 'Please enter a valid email address'
+            }
+          })
+        } : undefined)}
         render={({ field }) => (
           <input
             {...field}
@@ -45,11 +69,14 @@ const TextInput: React.FC<TextInputProps> = ({
             id={name}
             type={type}
             placeholder={placeholder}
-            className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-teal-100 placeholder:text-gray-500 text-gray-900 ${
-              error 
-                ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-100' 
-                : 'border-teal-200 bg-teal-50 focus:border-teal-500 focus:bg-white'
-            }`}
+            disabled={disabled}
+            className={`w-full border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-0.5 placeholder:text-gray-500 text-gray-900 ${
+              disabled 
+                ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed' 
+                : error 
+                  ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-100' 
+                  : 'border-teal-200 bg-teal-50 focus:border-teal-500 focus:ring-teal-100 focus:bg-white'
+            } ${inputClassName}`}
           />
         )}
       />

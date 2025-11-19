@@ -60,6 +60,21 @@ const MobileInput: React.FC<MobileInputProps> = ({
         <Controller
           name={name}
           control={control}
+          rules={required ? { 
+            required: `${label} is required`,
+            pattern: {
+              value: /^[0-9]{10}$/,
+              message: 'Please enter a valid 10-digit mobile number'
+            },
+            minLength: {
+              value: 10,
+              message: 'Mobile number must be 10 digits'
+            },
+            maxLength: {
+              value: 10,
+              message: 'Mobile number must be 10 digits'
+            }
+          } : undefined}
           render={({ field }) => (
             <input
               {...field}
