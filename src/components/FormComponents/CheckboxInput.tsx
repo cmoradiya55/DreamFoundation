@@ -19,6 +19,7 @@ interface CheckboxInputProps {
   error?: FieldError;
   className?: string;
   direction?: 'horizontal' | 'vertical';
+  hideLabel?: boolean;
 }
 
 const CheckboxInput: React.FC<CheckboxInputProps> = ({
@@ -31,30 +32,30 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
   icon,
   className = '',
   direction = 'horizontal',
+  hideLabel = false,
 }) => {
   const containerClass = direction === 'horizontal' ? 'flex flex-wrap gap-3 sm:gap-4' : 'space-y-2';
 
   return (
-    <div className={`sm:space-y-2 md:space-y-2 space-y-1 w-full ${className}`}>
+    <div className={`sm:space-y-3 md:space-y-3 space-y-2 w-full ${className}`}>
+      {!hideLabel && (
       <label className="flex text-sm font-semibold items-center sm:gap-2 md:gap-1 gap-1 text-teal-700">
         {icon}
         {label}
         {required && <span className="text-red-500 ml-2">*</span>}
       </label>
+      )}
       <Controller
         name={name}
         control={control}
         render={({ field }) => {
-          // For checkboxes, field.value should be an array of selected values
           const selectedValues = field.value || [];
 
           const handleCheckboxChange = (optionValue: string, isChecked: boolean) => {
             if (isChecked) {
-              // Add to array if not already present
               const newValue = [...selectedValues, optionValue];
               field.onChange(newValue);
             } else {
-              // Remove from array
               const newValue = selectedValues.filter((value: string) => value !== optionValue);
               field.onChange(newValue);
             }
@@ -65,13 +66,13 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
               {options.map((option) => {
                 const isChecked = selectedValues.includes(option.value);
                 return (
-                  <label key={option.value} className="flex items-center cursor-pointer mt-1 sm:mt-2 group">
+                  <label key={option.value} className="flex items-center cursor-pointer -mt-1 sm:-mt-2 group">
                     <input
                       type="checkbox"
                       value={option.value}
                       checked={isChecked}
                       onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
-                      className="w-4 h-4 cursor-pointer border-2 border-teal-700 rounded transition-all accent-teal-600 focus:ring-2 focus:ring-teal-200"
+                      className="w-4 h-4 cursor-pointer border-2 border-teal-700 rounded transition-all accent-teal-600 lg:focus:ring-2 lg:focus:ring-teal-200"
                     />
                     <span className={`ml-3 text-sm font-medium transition-colors ${isChecked
                         ? 'text-teal-700 font-semibold'

@@ -50,7 +50,7 @@ const RadioInput: React.FC<RadioInputProps> = ({
         render={({ field }) => (
           <div className={containerClass}>
             {options.map((option: RadioOption) => (
-              <label key={option.value} className="flex items-center cursor-pointer mt-1 sm:mt-2 group">
+              <label key={option.value} className="flex items-center cursor-pointer -mt-2 sm:mt-2 group">
                 <input
                   type="radio"
                   value={option.value}

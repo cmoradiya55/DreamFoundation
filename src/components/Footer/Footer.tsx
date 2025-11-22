@@ -43,7 +43,7 @@ export default function Footer() {
                     </div>
 
                     {/* Quick Links */}
-                    <div className="flex flex-col gap-4 items-center text-center sm:items-start sm:text-left md:col-span-1">
+                    <div className="flex flex-col gap-4 items-center text-center lg:ml-10 sm:items-start sm:text-left md:col-span-1">
                         <h3 className="text-lg font-semibold text-teal-50">Quick Links</h3>
                         <ul className="flex flex-wrap gap-2 justify-center sm:flex-col sm:items-start sm:gap-3 w-full">
                             {navLinks.map((link) => (
@@ -60,7 +60,7 @@ export default function Footer() {
                     </div>
 
                     {/* Contact */}
-                    <div className="flex flex-col gap-4 items-center text-center sm:items-start sm:text-left w-full md:col-span-1">
+                    <div className="flex flex-col gap-4 items-center text-center lg:ml-10 md:ml-5 sm:items-start sm:text-left w-full md:col-span-1">
                         <h3 className="text-lg font-semibold text-teal-50">Contact</h3>
                         <ul className="flex flex-col gap-3 w-full">
                             <li className="flex items-center justify-center sm:justify-start gap-3 text-sm text-teal-100">
@@ -85,7 +85,7 @@ export default function Footer() {
                     </div>
 
                     {/* Follow Us */}
-                    <div className="flex flex-col gap-4 items-center text-center sm:items-start sm:text-left md:col-span-1">
+                    <div className="flex flex-col gap-4 items-center text-center ml-0 lg:ml-25 md:ml-20 sm:items-start sm:text-left md:col-span-1">
                         <h3 className="text-lg font-semibold text-teal-50">Follow Us</h3>
                         <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
                             <a

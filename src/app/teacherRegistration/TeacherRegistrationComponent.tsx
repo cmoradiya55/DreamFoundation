@@ -28,6 +28,13 @@ import { TextInput, MobileInput, TextArea, DateInput, RadioInput, SelectInput } 
 
 import CheckboxInput from '@/components/FormComponents/CheckboxInput';
 import AcknowledgmentCheckbox from '@/components/FormComponents/AcknowledgmentCheckbox';
+import DocumentsRequiredComponent from '@/components/DocumentsRequiredComponent/DocumentsRequiredComponent';
+import { GraphQLClientError } from '@/lib/graphqlClient';
+import {
+  CreateTeacherRegistrationDto,
+  TeacherDocumentUploadInput,
+  CreateTeacherRegistrationMutation,
+} from './TeacherRegistrationGraphQL';
 
 export interface FormData {
   fullName: string;
@@ -42,10 +49,9 @@ export interface FormData {
   landmark: string;
   city: string;
   pincode: string;
-  documents: {
-    type: string;
-    documentURL: string;
-  }[];
+  documents: TeacherDocumentUploadInput[];
+  documentsSelected: string[];
+  documentFiles: Record<string, File | null>;
   hasBasicComputerKnowledge: string;
   knowMSOffice: string;
   knowOnlineTeachingTools: string;
@@ -81,7 +87,7 @@ const ALL_QUALIFICATIONS = [
   'Other Courses'
 ];
 
-const formDataInitial = {
+const formDataInitial: FormData = {
   fullName: '',
   gender: '',
   maritalStatus: '',
@@ -95,6 +101,8 @@ const formDataInitial = {
   city: '',
   pincode: '',
   documents: [],
+  documentsSelected: [],
+  documentFiles: {} as Record<string, File | null>,
   hasBasicComputerKnowledge: "",
   knowMSOffice: "",
   knowOnlineTeachingTools: "",
@@ -124,6 +132,94 @@ const formDataInitial = {
     }
   ],
 }
+
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+};
+
+const parseNumberField = (value: string | number, label: string) => {
+  if (value === null || value === undefined || value === '') {
+    throw new Error(`${label} is required.`);
+  }
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) {
+    throw new Error(`${label} must be a valid number.`);
+  }
+  return Math.trunc(parsed);
+};
+
+const parseOptionalNumber = (value?: string | number | null): number | null => {
+  if (value === null || value === undefined || value === '') {
+    return null;
+  }
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? Math.trunc(parsed) : null;
+};
+
+const toBooleanValue = (value?: string | boolean) => value === true || value === 'true';
+
+const toNullableString = (value?: string | null) => {
+  const trimmed = value?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : undefined;
+};
+
+const normalizeGender = (value: string): CreateTeacherRegistrationDto['gender'] => {
+  const normalized = value?.toUpperCase();
+  if (!normalized) {
+    throw new Error('Please select a gender before submitting the form.');
+  }
+  return normalized;
+};
+
+const buildTeacherRegistrationInput = (
+  data: FormData,
+): CreateTeacherRegistrationDto => {
+  const documents: TeacherDocumentUploadInput[] = (data.documents ?? []).filter(
+    (doc) => doc.documentType && doc.documentURL,
+  );
+
+  return {
+    fullName: data.fullName.trim(),
+    gender: normalizeGender(data.gender),
+    maritalStatus: data.maritalStatus.trim(),
+    dateOfBirth: data.dateOfBirth,
+    mobile: parseNumberField(data.mobile, 'Mobile number'),
+    mobileCountryCode: parseNumberField(data.mobileCountryCode, 'Mobile country code'),
+    email: data.email.trim(),
+    addressLine1: data.addressLine1.trim(),
+    addressLine2: toNullableString(data.addressLine2),
+    landmark: toNullableString(data.landmark),
+    city: data.city.trim(),
+    pincode: data.pincode.trim(),
+    hasBasicComputerKnowledge: toBooleanValue(data.hasBasicComputerKnowledge),
+    knowMSOffice: toBooleanValue(data.knowMSOffice),
+    knowOnlineTeachingTools: toBooleanValue(data.knowOnlineTeachingTools),
+    declarationAccepted: data.declarationAccepted,
+    documents,
+    educationalQualifications: data.educationalQualifications.map((qualification) => ({
+      qualification: qualification.qualification,
+      schoolCollegeName: qualification.schoolCollege?.trim() || '',
+      boardUniversityName: qualification.boardUniversity?.trim() || '',
+      year: parseOptionalNumber(qualification.year),
+      percentageOrGrade: toNullableString(qualification.percentageGrade) ?? null,
+      subjectsTaught: null,
+    })),
+    teachingExperiences: data.teachingExperiences.map((experience) => ({
+      totalExperienceInYears: parseOptionalNumber(experience.totalExperienceYears),
+      totalExperienceInMonths: parseOptionalNumber(experience.totalExperienceMonths),
+      previousSchoolName: experience.previousSchoolName?.trim() || '',
+      designation: experience.positionHeld?.trim() || '',
+      fromDate: experience.fromDate,
+      toDate: experience.toDate,
+      subjectsTaught: toNullableString(experience.subjectsGradesTaught) ?? null,
+    })),
+  };
+};
 
 const TeacherRegistrationComponent: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(formDataInitial);
@@ -236,7 +332,7 @@ const TeacherRegistrationComponent: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      console.log('DATA:', data);
+      console.log('Form values before processing:', data);
 
       // Check for duplicate qualifications
       const qualificationValues = data.educationalQualifications.map(q => q.qualification);
@@ -254,31 +350,56 @@ const TeacherRegistrationComponent: React.FC = () => {
         return;
       }
 
-      data.documents = [{
-        type: 'resume',
-        documentURL: 'abc',
-      },
-      {
-        type: 'passportSizePhoto',
-        documentURL: 'def',
-      },
-      {
-        type: 'certificates',
-        documentURL: 'ghi',
-      },
-      {
-        type: 'vaccinationRecord',
-        documentURL: 'jkl',
-      }]
+      const selectedDocuments = data.documentsSelected ?? [];
+      if (selectedDocuments.length === 0) {
+        alert('Please select at least one document to upload.');
+        return;
+      }
 
-      console.log('DATA:', data);
+      const documentFiles = data.documentFiles ?? {};
+      const missingDocuments = selectedDocuments.filter((docType) => !documentFiles?.[docType]);
+      if (missingDocuments.length > 0) {
+        alert(`Please upload files for: ${missingDocuments.join(', ')}`);
+        return;
+      }
 
-      alert(`Teacher application submitted successfully!`);
-      reset();
+      const documentsPayload: FormData['documents'] = [];
+      for (const docType of selectedDocuments) {
+        const file = documentFiles[docType];
+        if (!file) {
+          continue;
+        }
+        const documentURL = await fileToBase64(file as File);
+        documentsPayload.push({
+          documentType: docType,
+          documentURL,
+        });
+      }
+
+      const submissionPayload: FormData = {
+        ...data,
+        documents: documentsPayload,
+      };
+
+      const mutationInput = buildTeacherRegistrationInput(submissionPayload);
+      const result = await CreateTeacherRegistrationMutation(mutationInput);
+
+      alert(
+        `Teacher application submitted successfully! ${
+          result.registrationNumber ? `Registration No: ${result.registrationNumber}` : ''
+        }`,
+      );
+      reset(formDataInitial);
       setFormData(formDataInitial);
     } catch (error) {
       console.error('ERROR SUBMITTING TEACHER APPLICATION:', error);
-      alert('An error occurred while submitting the form. Please try again.');
+      const message =
+        error instanceof GraphQLClientError
+          ? error.details?.map((detail) => detail.message).join('\n') || error.message
+          : error instanceof Error
+            ? error.message
+            : 'An error occurred while submitting the form. Please try again.';
+      alert(message);
     }
   };
 
@@ -287,7 +408,7 @@ const TeacherRegistrationComponent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-teal-100 flex items-center justify-center py-3 sm:py-4 md:py-6 px-3 sm:px-5 lg:px-6 relative">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-teal-100 flex items-start lg:items-center justify-center py-3 sm:py-4 md:py-6 px-0 sm:px-5 lg:px-6 relative">
       <div className="max-w-5xl w-full relative z-10 text-sm">
 
         {/* Header Section */}
@@ -496,7 +617,7 @@ const TeacherRegistrationComponent: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => removeQualification(index)}
-                              className="inline-flex items-center gap-1 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-100 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-200 w-auto"
+                              className="inline-flex items-center gap-2 lg:gap-1 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-100 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-200 w-auto"
                               disabled={qualificationFields.length === 1}
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -627,11 +748,11 @@ const TeacherRegistrationComponent: React.FC = () => {
                             <div className="flex flex-wrap items-center gap-2">
                               <div className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
                                 <span>{years}</span>
-                                <span>yrs</span>
+                                <span>Years</span>
                               </div>
                               <div className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-700">
                                 <span>{months}</span>
-                                <span>mos</span>
+                                <span>Months</span>
                               </div>
                               <button
                                 type="button"
@@ -750,7 +871,7 @@ const TeacherRegistrationComponent: React.FC = () => {
 
               {/* Skills & Strengths */}
               <div>
-                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-6 sm:mb-3">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
                   • Skills & Strengths
                 </h2>
                 <div className="space-y-3 sm:space-y-4">
@@ -840,6 +961,19 @@ const TeacherRegistrationComponent: React.FC = () => {
                 </div>
               </div>
 
+              {/* Documents Required */}
+              <DocumentsRequiredComponent
+                control={control}
+                errors={errors.documentsSelected}
+                options={[
+                  { value: 'resume', label: 'Resume/CV (In PDF Format)' },
+                  { value: 'passportSizePhoto', label: 'Recent Passport Size Photo' },
+                  { value: 'certificates', label: 'Certificates (Qualification + Experience)' },
+                ]}
+                title="Documents Required"
+                name="documentsSelected"
+              />
+
               {/* Teacher Eligibility Criteria */}
               <AcknowledgmentCheckbox
                 title="• Teacher Eligibility Criteria"
@@ -873,7 +1007,7 @@ const TeacherRegistrationComponent: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base flex items-center gap-2 sm:gap-2.5 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 w-auto"
+              className="bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base flex items-center gap-2 sm:gap-2.5 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 w-auto mb-4"
             >
               {isSubmitting ? (
                 <>

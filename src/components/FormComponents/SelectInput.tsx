@@ -97,7 +97,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
                   className={`w-full px-4 py-3 border-2 rounded-xl text-left flex items-center justify-between transition-all duration-200 ${
                     error
                       ? 'border-red-300 bg-red-50 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-100'
-                      : 'border-teal-200 bg-white focus-visible:border-teal-600 focus-visible:ring-2 focus-visible:ring-teal-100'
+                      : 'border-teal-200 bg-teal-50 focus-visible:border-teal-600 focus-visible:ring-2 focus-visible:ring-teal-100'
                   }`}
                 >
                   <span className="flex flex-col">
