@@ -10,14 +10,12 @@ export async function POST(req) {
     try {
         body = await req.json();
     } catch (err) {
+        console.log("err", err)
         return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
-    console.log("body", body);
     
     let emailContent;
     let htmlEmailContent;
-    // holds generated PDF buffer when formType === 'eventRegistration' (disabled for now)
-    // let pdfBuffer;
 
     // Dream Foundation details
     const foundationInfo = {
@@ -151,8 +149,7 @@ export async function POST(req) {
             address,
             aadharNumber,
             children = [],
-            formattedData,
-            letterheadPath = '/images/letterPed.jpeg'
+            eventDetail = {}
         } = body;
 
         if (!fullName || !email || !mobile) {
@@ -168,6 +165,12 @@ export async function POST(req) {
 
         emailContent = `
             📅 New Event Registration - Dream Foundation
+
+            EVENT DETAILS:
+            • Event Name: ${eventDetail.eventName || 'Dream Foundation Event'}
+            • Event Date: ${eventDetail.eventDate || 'TBD'}
+            • Event Time: ${eventDetail.eventTime || 'TBD'}
+            • Event Location: ${eventDetail.eventLocation || 'TBD'}
 
             REGISTRATION INFO
             • Registration ID: ${registrationId || '-'}
@@ -222,7 +225,14 @@ export async function POST(req) {
                     <h3>${foundationInfo.tagline}</h3>
                     </div>
                     <div class="section">
-                    <h3>Event Registration Info</h3>
+                    <h3>Event Details</h3>
+                    <p><strong>Event Name:</strong> ${eventDetail.eventName || 'Dream Foundation Event'}</p>
+                    <p><strong>Event Date:</strong> ${eventDetail.eventDate || 'TBD'}</p>
+                    <p><strong>Event Time:</strong> ${eventDetail.eventTime || 'TBD'}</p>
+                    <p><strong>Event Location:</strong> ${eventDetail.eventLocation || 'TBD'}</p>
+                    </div>
+                    <div class="section">
+                    <h3>Registration Info</h3>
                     <p><strong>Registration ID:</strong> ${registrationId || '-'}</p>
                     <p><strong>Name:</strong> ${fullName}</p>
                     <p><strong>Email:</strong> ${email}</p>
@@ -256,35 +266,6 @@ export async function POST(req) {
                 </body>
             </html>
         `;
-       
-        // Build a letterhead-like HTML that we will render to PDF using Puppeteer (disabled for now)
-        // const resolvedLetterheadPath = path.join(process.cwd(), 'public', letterheadPath.replace(/^\//, ''));
-        // let letterheadBase64 = '';
-        // try {
-        //     const imgBuf = fs.readFileSync(resolvedLetterheadPath);
-        //     const ext = path.extname(resolvedLetterheadPath).toLowerCase().replace('.', '') || 'jpeg';
-        //     letterheadBase64 = `data:image/${ext};base64,${imgBuf.toString('base64')}`;
-        // } catch (e) {
-        //     // If letterhead file is missing, continue without background
-        //     letterheadBase64 = '';
-        // }
-
-        // const pdfHtml = '';
-        
-        // Render the HTML to PDF buffer using Puppeteer (disabled for now)
-        // try {
-        //     const browser = await puppeteer.launch({
-        //         args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        //         headless: true
-        //     });
-        //     const page = await browser.newPage();
-        //     await page.setContent(pdfHtml, { waitUntil: 'networkidle0' });
-        //     pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
-        //     await browser.close();
-        // } catch (err) {
-        //     console.error('PDF generation failed:', err);
-        // }
-
     } 
 
     try {
@@ -308,24 +289,18 @@ export async function POST(req) {
         // Resolve absolute path to the letterhead image in public/
         const mailOptions = {
             from: process.env.SEND_EMAIL, 
-            to: "mvinfinus@gmail.com", 
-            replyTo: body.email,
-            subject: body.formType === 'contactUS' ?  `Contact Request from ${body.name} - Dream Foundation` : 
-                     body.formType === 'admissionRegistration' ? `New Admission Registration - ${body.fullName} - Dream Foundation` :
-                     body.formType === 'eventRegistration' ? `New Event Registration - ${body.fullName} - Dream Foundation` :
-                     `Sample Request from ${body.businessName} - Dream Foundation`,
+            to: body.email,
+            subject: body.formType === 'admissionRegistration' ? `New Admission Registration - ${body.fullName} - Dream Foundation` :
+                     body.formType === 'eventRegistration' ? `New Event Registration - ${body.fullName} - Dream Foundation` : "",
             text: emailContent,
             html: htmlEmailContent,
-            // attachments disabled for now
-            // attachments: body.formType === 'eventRegistration' && pdfBuffer ? [
-            //     { filename: `EventRegistration_${Date.now()}.pdf`, content: pdfBuffer }
-            // ] : undefined,
         };
 
         // Send email to admin
         await transporter.sendMail(mailOptions);
 
-        // Store registration data in admin system
+
+        // Store registration data in admin system (existing functionality)
         if (body.formType === 'admissionRegistration' || body.formType === 'eventRegistration') {
             try {
                 await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/admin/registrations`, {
@@ -361,10 +336,6 @@ export async function POST(req) {
                      
                     </html>
                 `,
-                // attachments disabled for now
-                // attachments: body.formType === 'eventRegistration' && pdfBuffer ? [
-                //     { filename: `EventRegistration_${Date.now()}.pdf`, content: pdfBuffer }
-                // ] : undefined
             };
 
             await transporter.sendMail(confirmationEmail);
@@ -372,9 +343,7 @@ export async function POST(req) {
 
         const successMessage = body.formType === 'admissionRegistration' 
             ? "Registration submitted successfully! Check your email for confirmation." 
-            : body.formType === 'contactUS' 
-            ? "Contact request submitted successfully"
-            : "Sample request submitted successfully";
+            : "Event registration submitted successfully! Check your email for confirmation.";
 
         return NextResponse.json(
             { success: true, message: successMessage },

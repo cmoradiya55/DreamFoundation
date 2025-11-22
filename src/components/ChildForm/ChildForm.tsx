@@ -129,7 +129,7 @@ const ChildForm: React.FC<ChildFormProps> = ({ index, control, errors, onRemove 
           control={control}
           label="Child Date of Birth"
           required={true}
-          error={errors.children?.[index]?.childDateOfBirth as any}
+          error={errors.children?.[index]?.childDateOfBirth}
           max={new Date().toISOString().split('T')[0]}
         />
 

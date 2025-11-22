@@ -38,6 +38,7 @@ const DateInput: React.FC<DateInputProps> = ({
       <Controller
         name={name}
         control={control}
+        rules={required ? { required: `${label} is required` } : undefined}
         render={({ field }) => (
           <input
             {...field}

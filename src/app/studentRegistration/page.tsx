@@ -1,0 +1,11 @@
+import { Metadata } from 'next';
+import StudentRegistrationComponent from './StudentRegistrationComponent';
+
+export const metadata: Metadata = {
+  title: 'Admission Registration | Dream Foundation',
+  description: 'Apply for admission to Dream Foundation! Fill out our comprehensive registration form to start your educational journey with us and unlock your potential.',
+};
+
+export default function StudentRegistration() {
+  return <StudentRegistrationComponent />;
+}
